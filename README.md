@@ -1,5 +1,5 @@
 # Review
-Tools for programming languages independent code reviews.
+Tool for programming languages independent code reviews.
 
 
 # Beschreibung
@@ -13,6 +13,7 @@ Das Werkzeug basiert komplett auf regulären Ausdrücken und Dateifiltern, es arbe
 rein textbasiert, findet, schliesst aus und ersetzt. Die Kombination von Finden
 und Ausschluss ermöglich die Suche nach nicht existierenden, unvollständigen sowie
 nicht erfüllten Mustern.
+
 
 # Motivation
 In einem Projekt mit einer Vielzahl von Beteiligten gibt es eine Vielzahl von persönlichen
@@ -32,3 +33,58 @@ und laufen parallel zur Implementierung.
 
 Auffälligkeiten und Verfehlungen wiederholt zu finden, zu dokumentieren und wenn
 möglich zu korrigieren. Das sind die Erwartungen an Review.
+
+
+# Verwendung
+TODO:
+
+## Pattern
+TODO:
+
+### Aufbau
+TODO:
+
+### Syntax
+- zeilenorientiert
+- Kommentare beginnen mit ``#``
+- maskieren von Zeichen ``\x<HEX>``
+    ``\x23`` = #
+    ``\x20`` = Leerzeichen  
+- weitere Steuerbefehle 
+    ``\R   ``= Zeilenumbruch (plattformuebergreifend) 
+    ``VOID ``= leerer String beim Ersetzen 
+    ``...  ``= Fortfuehrung der Zeile
+
+#### Dateifilter
+- Backslash/Slash werden gleich behandelt
+- Platzhalter ``*`` und ``?`` werden unterstützt
+- Trennzeichen ``+`` (einbeziehen) und ``-``(ausschliessen)
+- Ausschlüsse auf Ebene der Fundstelle 
+    ``file[line]`` oder ``file[line:char]``
+
+#### Suchmuster
+- regulaerer Ausdruck der auf den Inhalt einer Datei angewandt wird
+- folgt dem ersten Leerzeichen ein ``!`` wird der Folgeausdruck als Ausnahme interpretiert: 
+    ``Face\.\w+ !Face\.(xhtml|on(Show|Validate|Error|Event)) `` 
+  sucht nach: 
+    ``Face\.\w+`` ignoriert aber _Face.xhtml_, _Face.onShow_, _Face.onValidate_, ... 
+  __WICHTIG__:  
+    Die Ausnahme wird nur innerhalb der Fundstelle geprueft.   
+    Liegen die Merkmale zur Unterscheidung ausserhalb, muss das Muster 
+    entsprechend ausgedehnt werden.
+
+#### Aktion
+- Ausdruck zum Ersetzen (``$1`` - ``$9`` werden unterstuetzt)
+- beginnt eine Aktion mit ``INFO:`` wird nur eine Meldung ausgegeben
+- beginnt eine Aktion mit ``ECHO:`` oder ``TEST:`` wird nur eine Meldung mit der
+    Ersetzung als Vorschau ausgegeben
+- entspricht die Aktion ``VOID``, wird die Funstelle durch einen leeren String ersetzt,
+    was dem Löschen entspricht
+  
+
+### Beispiele
+TODO:
+
+
+# Best Practice / Erfolgsrezept
+TODO:
