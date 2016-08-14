@@ -51,9 +51,9 @@ TODO:
     ``\x23`` = #  
     ``\x20`` = Leerzeichen  
 - weitere Steuerbefehle  
-    ``\R   ``= Zeilenumbruch (plattformuebergreifend)  
+    ``\R   ``= Zeilenumbruch (plattformübergreifend)  
     ``VOID ``= leerer String beim Ersetzen  
-    ``...  ``= Fortfuehrung der Zeile
+    ``...  ``= Fortführung der Zeile
 
 #### Dateifilter
 - Backslash/Slash werden gleich behandelt
@@ -63,24 +63,23 @@ TODO:
     ``file[line]`` oder ``file[line:char]``
 
 #### Suchmuster
-- regulaerer Ausdruck der auf den Inhalt einer Datei angewandt wird
+- regulärer Ausdruck der auf den Inhalt einer Datei angewandt wird
 - folgt dem ersten Leerzeichen ein ``!`` wird der Folgeausdruck als Ausnahme interpretiert:  
     ``Face\.\w+ !Face\.(xhtml|on(Show|Validate|Error|Event)) `` 
   sucht nach:  
     ``Face\.\w+`` ignoriert aber _Face.xhtml_, _Face.onShow_, _Face.onValidate_, ...  
   __WICHTIG__:  
-    Die Ausnahme wird nur innerhalb der Fundstelle geprueft.   
+    Die Ausnahme wird nur innerhalb der Fundstelle geprüft.   
     Liegen die Merkmale zur Unterscheidung ausserhalb, muss das Muster 
     entsprechend ausgedehnt werden.
 
 #### Aktion
-- Ausdruck zum Ersetzen (``$1`` - ``$9`` werden unterstuetzt)
+- Ausdruck zum Ersetzen (``$1`` - ``$9`` werden unterstützt)
 - beginnt eine Aktion mit ``INFO:`` wird nur eine Meldung ausgegeben
 - beginnt eine Aktion mit ``ECHO:`` oder ``TEST:`` wird nur eine Meldung mit der
     Ersetzung als Vorschau ausgegeben
 - entspricht die Aktion ``VOID``, wird die Funstelle durch einen leeren String ersetzt,
     was dem Löschen entspricht
-  
 
 ### Beispiele
 TODO:
