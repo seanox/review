@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<project name="review" default="compile" basedir=".">
+  
+  <property name="workspace" value="."/>
+  <property name="workspace.sources" value="${workspace}/sources"/>
+  <property name="workspace.classes" value="${workspace}/classes"/>
+  <property name="release.file" value="${ant.project.name}.jar"/>  
+  
+  <target name="compile">
+    <delete dir="${workspace.classes}"/>
+    <mkdir dir="${workspace.classes}"/>
+    <delete file="./${release.file}"/>
+    <javac destdir="${workspace.classes}" deprecation="on" debug="off" includeantruntime="false">
+      <src path="${workspace.sources}"/>
+    </javac>
+    <jar destfile="./${release.file}" compress="true">
+      <fileset dir="${workspace.classes}"/>
+    </jar>
+    <delete dir="${workspace.classes}"/>
+  </target>
+</project>
