@@ -47,12 +47,12 @@ TODO:
 ### Syntax
 - zeilenorientiert
 - Kommentare beginnen mit ``#``
-- maskieren von Zeichen ``\x<HEX>``
-    ``\x23`` = #
+- maskieren von Zeichen ``\x<HEX>``  
+    ``\x23`` = #  
     ``\x20`` = Leerzeichen  
-- weitere Steuerbefehle 
-    ``\R   ``= Zeilenumbruch (plattformuebergreifend) 
-    ``VOID ``= leerer String beim Ersetzen 
+- weitere Steuerbefehle  
+    ``\R   ``= Zeilenumbruch (plattformuebergreifend)  
+    ``VOID ``= leerer String beim Ersetzen  
     ``...  ``= Fortfuehrung der Zeile
 
 #### Dateifilter
@@ -64,10 +64,10 @@ TODO:
 
 #### Suchmuster
 - regulaerer Ausdruck der auf den Inhalt einer Datei angewandt wird
-- folgt dem ersten Leerzeichen ein ``!`` wird der Folgeausdruck als Ausnahme interpretiert: 
+- folgt dem ersten Leerzeichen ein ``!`` wird der Folgeausdruck als Ausnahme interpretiert:  
     ``Face\.\w+ !Face\.(xhtml|on(Show|Validate|Error|Event)) `` 
-  sucht nach: 
-    ``Face\.\w+`` ignoriert aber _Face.xhtml_, _Face.onShow_, _Face.onValidate_, ... 
+  sucht nach:  
+    ``Face\.\w+`` ignoriert aber _Face.xhtml_, _Face.onShow_, _Face.onValidate_, ...  
   __WICHTIG__:  
     Die Ausnahme wird nur innerhalb der Fundstelle geprueft.   
     Liegen die Merkmale zur Unterscheidung ausserhalb, muss das Muster 
