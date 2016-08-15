@@ -1,0 +1,44 @@
+	Syntax
+
+	- line oriented
+	- comments start with #
+	- escaping of characters \x<HEX>
+	  \x23 = #
+	  \x20 = space
+	- more commands
+	  \R	line breaks (cross-platform)
+	  VOID	empty string when replacing (delete)
+	  ...	continuation of the line
+
+	A (anti)pattern has three lines.
+
+	1. File Filter
+
+	- Backslash/Slash werden gleich behandelt
+	- placeholders * and ? are supported
+	- delimiter + (include) and - (exclude)
+	- Ausschluesse auf Ebene der Fundstelle
+	  file[line] oder file[line:char]
+
+	2. Search Pattern
+
+	- regular expression (searches the complete content)
+	- follows the after first space an !, the following expression is
+	  interpreted as exclusion:
+		  Face\.\w+ !Face\.(xhtml|on(Show|Validate|Error|Event))
+	  search: Face\.\w+, ignored: Face.xhtml, Face.onShow, Face.onValidate, ...
+		  IMPORTANT:
+	  The exclusion is only searched within the place of finding.
+	  If located the exclusion outside, then the pattern must be extended.
+
+	3. Action
+
+	- replace expression ($1 - $9 are supported)
+	- action starts with INFO: only one message is displayed
+	- action starts with ECHO: or TEST: a preview of the replacement is
+	  displayed
+	- action is VOID the the reference is replaced by an empty string, which is
+	  equal to the deletion
+
+	Lines can be continue if they end with ... and after line breaks begin again
+	with ... then the lines are used as one line.
