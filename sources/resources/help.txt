@@ -14,16 +14,16 @@
 
 	1. File Filter
 
-	- Backslash/Slash werden gleich behandelt
+	- backslash / slash are identical
 	- placeholders * and ? are supported
 	- delimiter + (include) and - (exclude)
-	- Ausschluesse auf Ebene der Fundstelle
-	  file[line] oder file[line:char]
+	- exclusions at the level of place of finding
+	  file[line] or file[line:char]
 
 	2. Search Pattern
 
 	- regular expression (searches the complete content)
-	- follows the after first space an !, the following expression is
+	- follows the after first space an ! the following expression is
 	  interpreted as exclusion:
 		  Face\.\w+ !Face\.(xhtml|on(Show|Validate|Error|Event))
 	  search: Face\.\w+, ignored: Face.xhtml, Face.onShow, Face.onValidate, ...
