@@ -1,7 +1,8 @@
+
 	found:		%d
 	fixed:		%d
 	errors:		%d
-	duration:	%f s
-	reviews:	%d (%d R/s)
-	files:		%d (%d F/s)
-	volume:		%d MB (%d MB/s)
+	duration:	%d s
+	reviews:	%d (%o Reviews/s)
+	files:		%d (%o Files/s)
+	volume:		%d MB (%o MB/s)
