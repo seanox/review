@@ -76,7 +76,7 @@
       <fileset dir="${release}"/>
     </touch>      
     <antcall target="clear"/>
-    <copy file="${release.file}" todir="${releases}"/> 
+    <copy file="${release.file}" todir="${releases}" overwrite="true"/> 
   </target>
 
   <target name="clear">

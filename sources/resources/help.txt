@@ -8,7 +8,6 @@
 	  \x20 = space
 	- more commands
 	  \R	line breaks (cross-platform)
-	  \r    white spaces without line breaks
 	  VOID	empty string when replacing (delete)
 	  ...	continuation of the line
 
