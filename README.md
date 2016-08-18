@@ -66,8 +66,8 @@ TODO:
 - regulärer Ausdruck der auf den Inhalt einer Datei angewandt wird
 - folgt dem ersten Leerzeichen ein ``!`` wird der Folgeausdruck als Ausnahme interpretiert:  
     ``Face\.\w+ !Face\.(xhtml|on(Show|Validate|Error|Event))``  
-  sucht nach:  
-    ``Face\.\w+`` ignoriert aber _Face.xhtml_, _Face.onShow_, _Face.onValidate_, ...  
+  sucht nach ``Face\.\w+``  
+  ignoriert aber _Face.xhtml_, _Face.onShow_, _Face.onValidate_, ...  
   __WICHTIG__:  
     Die Ausnahme wird nur innerhalb der Fundstelle geprüft.   
     Liegen die Merkmale zur Unterscheidung ausserhalb, muss das Muster 
