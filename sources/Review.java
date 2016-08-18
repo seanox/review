@@ -3,7 +3,7 @@
  *  im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
  *  Diese Software unterliegt der Version 2 der GNU General Public License.
  *
- *  Review, text based code analysis
+ *  Review, text based code analyzer
  *  Copyright (C) 2016 Seanox Software Solutions
  *
  *  This program is free software; you can redistribute it and/or modify it
@@ -31,75 +31,138 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *  Review, a text based code analyzer.<br>
+ *  <br>
+ *  Review 1.3.4 20160818<br>
+ *  Copyright (C) 2016 Seanox Software Solutions<br>
+ *  Alle Rechte vorbehalten.
+ *
+ *  @author  Seanox Software Solutions
+ *  @version 1.3.4 20160818
+ */
 public class Review {
     
+    /** list/queue of tasks */
     private volatile static List<Task> tasks;
+
+    /** list of workers*/
     private volatile static List<Worker> workers;
     
+    /** number of sites */
     private static long founds;
+    
+    /** number of corrections */
     private static long corrections;
+    
+    /** start time */
     private static long timing;
+
+    /** amount of processed data (bytes) */
     private static long volume;
+    
+    /** amount of processed files */
     private static long files;
+    
+    /** number of occurring errors */
     private static long errors;
+    
+    /** number of performed reviews */
     private static long reviews;
     
+    /** (De)Activation of the replacement */
     private static boolean performReplacement;
-    private static boolean verboseInfos;
     
+    /** (De)Activation of the info output */
+    private static boolean verboseInfos;
+
+    /** (De)Activation of the help output */
+    private static boolean showHelp;
+
+    /** number of workers/threads */
     private static final int THREADS = 25;
     
+    /** pattern for line break (cross plattform) */
+    private static final String LINE_BREAK = "(?:(?:\\r\\n)|(?:\\n\\r)|[\\r\\n])";
+    
+    /** pattern for line white spaces */
+    private static final String LINE_WHITE_SPACES = "[\\x00-\\x09\\x0B-\\x0C\\x0E-\\x1F]";
+    
+    /**
+     *  Reads the contents of a file.
+     *  @param  file file
+     *  @return the contents of a file as byte array
+     *  @throws IOException
+     *      In the case of the failed file access.
+     */
     private static byte[] readFile(File file) throws IOException {
         
         byte[] bytes = Files.readAllBytes(file.toPath());
+        Review.files++;
         Review.volume += bytes.length;
         return bytes;
     }
     
+    /**
+     *  Writes the contents in a file.
+     *  @param  file  file
+     *  @param  bytes content
+     *  @throws IOException
+     *      In the case of the failed file access.
+     */
     private static void writeFile(File file, byte[] bytes) throws IOException {
         
         Files.write(file.toPath(), bytes);
-        Review.files++;
         Review.volume += bytes.length;
     }
     
+    /**
+     *  Decodes the text of a task and preparation for use.
+     *  @param  text task as text
+     *  @return decoded and prepared task
+     */
     private static String decodeTaskText(String text) {
         
         if (text == null) return null;
         text = text.replaceAll("\\t", "    ");
-        text = text.replaceAll("[\\x00-\\x06]", " ").trim();
+        text = text.replaceAll(LINE_WHITE_SPACES, " ").trim();
         text = text.replaceAll("%", "\\x25");
         return text;
     }
     
+    /**
+     *  Reads all taks from a file.
+     *  @param  file anti-pattern file
+     *  @return array of created and prepared task
+     */    
     private static Task[] readTasks(File file) throws IOException {
 
         List<Task> tasks = new ArrayList<>();
         String content = new String(Review.readFile(file));
         String pattern = new String();
         int index = 0;
-        for (String line : content.split("(?:\\r\\n)|(?:\\n\\r)|[\\r\\n]")) {
+        for (String line : content.split(LINE_BREAK)) {
             index++;
             pattern += (line.matches("^[^\\s].*") ? index + ":" + line : line) + "\n";
         }
-        pattern = pattern.replaceAll("\\.{3,} *\n *\\.{3,}", " ");
-        pattern = pattern.replaceAll("#.*[\r\n]+", "\n");
-        pattern = pattern.replaceAll("[\\x00-\\x06]", " ");
-        pattern = pattern.replaceAll("(\n)([^\\s])", "$1\00$2");
-        String[] rules = pattern.split("\n\\x00");
+        pattern = pattern.replaceAll("\\.{3,}(\\h+)*\n(\\h+)*\\.{3,}", " ");
+        pattern = pattern.replaceAll("#.*[\\r\\n]+", "\n");
+        pattern = pattern.replaceAll(LINE_WHITE_SPACES, " ");
+        pattern = pattern.replaceAll("(\\n)([^\\s])", "$1\00$2");
+        String[] rules = pattern.split("\\n\\x00");
         for (String rule : rules) {
             String[] lines = rule.split("\\n");
             if (lines.length < 2) continue;
             Task task = new Task();
-            task.index = Integer.valueOf(lines[0].replaceAll("^(\\d+):(.*)$", "$1")).intValue();
-            task.filter = Review.decodeTaskText(lines[0].replaceAll("^(\\d+):(.*)$", "$2"));
+            task.lineNumber = Integer.valueOf(lines[0].replaceAll("^(\\d+):(.*)$", "$1")).intValue();
+            task.fileFilter = Review.decodeTaskText(lines[0].replaceAll("^(\\d+):(.*)$", "$2"));
             if (lines.length > 1) {
                 String expression = lines[1];
                 String[] split = expression.split("\\s+!", 2);
-                task.expression = Review.decodeTaskText(split[0]);
-                if (split.length > 1) task.ignore = Review.decodeTaskText(split[1]);
-                if (task.ignore != null && task.ignore.length() == 0)
-                    task.ignore = null;
+                task.contentFilter = Review.decodeTaskText(split[0]);
+                if (split.length > 1) task.contentExclude = Review.decodeTaskText(split[1]);
+                if (task.contentExclude != null && task.contentExclude.length() == 0)
+                    task.contentExclude = null;
             }
             if (lines.length > 2) {
                 task.todo = Review.decodeTaskText(lines[2]);
@@ -107,12 +170,11 @@ public class Review {
                 task.todo = task.todo.replaceAll("\\+", "%2B");
                 task.todo = URLDecoder.decode(task.todo, "ISO-8859-1");
             }
-            
-            if (task.filter == null
-                    || task.filter.trim().length() == 0)
+            if (task.fileFilter == null
+                    || task.fileFilter.trim().length() == 0)
                 continue;
-            if (task.expression == null
-                    || task.expression.trim().length() == 0)
+            if (task.contentFilter == null
+                    || task.contentFilter.trim().length() == 0)
                 continue;
             
             task.initialize();
@@ -121,6 +183,11 @@ public class Review {
         return tasks.toArray(new Task[0]);
     }
     
+    /**
+     *  Requests and locks a worker for a file.
+     *  @param  file file
+     *  @return the established worker, otherwise {@code null}
+     */
     private static Worker lockWorker(File file) {
         
         for (Worker worker : Review.workers)
@@ -128,6 +195,10 @@ public class Review {
         return null;
     }
     
+    /**
+     *  Checks and searchs active workers.
+     *  @return {@code true} when active worker found
+     */
     private static boolean activeWorker() {
         
         for (Worker worker : Review.workers)
@@ -135,6 +206,13 @@ public class Review {
         return false;
     }
     
+    /**
+     *  Scans the file system for files for the review and established workers
+     *  to perform.
+     *  @param  path path
+     *  @throws Exception
+     *      In the case of occurring errors.
+     */
     private static void seek(File path) throws Exception {
         
         File[] files = path.listFiles(); 
@@ -152,7 +230,33 @@ public class Review {
         }
     }
     
-    public static void main(String[] options) throws IOException {
+    /**
+     *  Returns the text of a resource file.
+     *  @param  resource
+     *  @return text of a resource file
+     *  @throws IOException
+     *      In the case when the access to the resources fails.
+     */
+    private static String getResourceText(String resource) throws IOException {
+        
+        ClassLoader classLoader = Review.class.getClassLoader();
+        File file = new File(classLoader.getResource("resources/" + resource).getFile());
+        String text = new String(Review.readFile(file));
+        
+        text = text.replaceAll("\\x20{4}", "\t");
+        text = text.replaceAll("(?m)\\s+$", System.getProperty("line.separator"));
+        text = text.replaceAll("\\s+$", "");
+        
+        return text;
+    }
+
+    /**
+     *  Main entry in the application.
+     *  @param  options start parameter
+     *  @throws Exception
+     *      In the case of occurring errors.
+     */
+    public static void main(String[] options) throws Exception {
         
         File path = null;
         String pattern = null;
@@ -167,21 +271,22 @@ public class Review {
                     path = new File(options[loop].trim());
                 else if (option.toLowerCase().equals("-v"))
                     Review.verboseInfos = true;
-            } else pattern += "\00" + option;
+                else if (option.toLowerCase().equals("-h"))
+                    Review.showHelp = true;                
+            } else pattern = option;
         }
         
         if (pattern == null) {
-            System.out.println("usage: java -cp review.jar <options> <pattern>");
+            System.out.println(Review.getResourceText("usage.txt"));
+            if (Review.showHelp)
+                System.out.println(Review.getResourceText("help.txt"));
             System.out.println("");
-            System.out.println("\t-d directory (default work directory)");
-            System.out.println("\t-x perform replacement");
-            System.out.println("\t-v verbose infos");
-            System.out.println("");
-            System.out.println("\tpattern file with (anti) pattern");
             return;
         }
         
-        System.out.println("Review #[ant:build-version] #[ant:build-year]#[ant:build-month]#[ant:build-day]");
+        System.out.println("Review [Version #[ant:release-version] #[ant:release-date]]");
+        System.out.println("Copyright (C) #[ant:release-year] Seanox Software Solutions");
+        System.out.println("Programming Languages Independent Code Review");
         System.out.println();
         Review.timing = System.currentTimeMillis();
         Review.tasks = new ArrayList<>(Arrays.asList(Review.readTasks(new File(pattern))));
@@ -215,24 +320,41 @@ public class Review {
         for (Worker worker : Review.workers)
             worker.interrupt();
         
-        System.out.println();
-        System.out.println("\tfound:\t\t" + Review.founds);
-        System.out.println("\tfixed:\t\t" + Review.corrections);
-        System.out.println("\terrors:\t\t" + Review.errors);
         long time = Math.max((System.currentTimeMillis() -Review.timing) /1000, 1);
-        System.out.println("\tduration:\t" + time + " s");
-        System.out.println("\treviews:\t" + Review.reviews + " (" + (Review.reviews /time) + " R/s)");
-        System.out.println("\tfiles:\t\t" + Review.files + " (" + (Review.files /time) + " F/s)");
         long volume = Review.volume /1024 /1024;
-        System.out.println("\tvolume:\t\t" + volume + " MB (" + (volume /time) + " MB/s)");
+        String summary = Review.getResourceText("summary.txt");
+        summary = String.format(summary, Long.valueOf(Review.founds),
+                Long.valueOf(Review.corrections),
+                Long.valueOf(Review.errors),
+                Long.valueOf(time),
+                Long.valueOf(Review.reviews),
+                Long.valueOf(Review.reviews /time),
+                Long.valueOf(Review.files),
+                Long.valueOf(Review.files /time),
+                Long.valueOf(volume),
+                Long.valueOf(volume /time));
+        System.out.println(summary);
     }
     
+    /** 
+     *  Inner class for a Worker. 
+     *  Worker are (re)used as thread and perform the analysis of a file.
+     *  Review has a fixed number of workers, which reviews are assigned.
+     *  A review is a set of tasks.
+     */
     private static class Worker extends Thread {
         
-        volatile File file;
+        /** file that must be reviewed */
+        private volatile File file;
         
-        volatile long timing;
+        /** time of last interruption */
+        private volatile long timing;
         
+        /**
+         *  locks the worker for a file.
+         *  @param  file file
+         *  @return {@code true}, if the worker could be established
+         */
         private boolean lock(File file) {
 
             if (this.file != null)
@@ -241,6 +363,12 @@ public class Review {
             return true;
         }
         
+        /**
+         *  Interrupts the processing with maximum exploitation of the time
+         *  slice of the operating system.
+         *  @throws InterruptedException
+         *       In the case where the current thread is interrupted.
+         */
         private void sleepSmart() throws InterruptedException {
 
             if (this.timing == 0)
@@ -275,46 +403,68 @@ public class Review {
         }
     }
 
+    /**
+     *  Inner class for a Task.
+     *  A Task is one part of the code analysis.
+     */
     private static class Task {
 
-        volatile String  filter;
-        volatile String  fileExclude;
-        volatile Pattern fileExcludePattern;
-        volatile String  fileInclude;
-        volatile Pattern fileIncludePattern;
-        volatile String  lineExclude;
-        volatile Pattern lineExcludePattern;
-
-        volatile String  expression;
-        volatile Pattern expressionPattern;
-        volatile String  expressionPatternFlat;
-        volatile String  ignore;
-        volatile Pattern ignorePattern;
-        volatile String  todo;
-
-        long index;
+        /** file filter */
+        private volatile String fileFilter;
         
-        private static String decodeLineSeparators(String pattern) {
-            
-            pattern = pattern.replaceAll("\\r|\\\\r", "\\\\x01");
-            pattern = pattern.replaceAll("\\n|\\\\n", "\\\\x02");
-            pattern = pattern.replaceAll("\\\\s", "(?:\\\\s|\\\\x01|\\\\x02)");
-            return pattern;
-        }
+        /** file filter exclude */
+        private volatile String fileExclude;
         
+        /** file filter exclude pattern */
+        private volatile Pattern fileExcludePattern;
+        
+        /** file filter include */
+        private volatile String fileInclude;
+        
+        /** file filter include pattern */
+        private volatile Pattern fileIncludePattern;
+        
+        /** file line exclude */
+        private volatile String fileLineExclude;
+        
+        /** file line exclude pattern */
+        private volatile Pattern fileLineExcludePattern;
+
+        /** content filter */
+        private volatile String contentFilter;
+
+        /** content filter pattern */
+        private volatile Pattern contentFilterPattern;
+
+        /** content filter pattern flat */
+        private volatile String contentFilterPatternFlat;
+
+        /** content exclude */
+        private volatile String contentExclude;
+
+        /** content exclude pattern */
+        private volatile Pattern contentExcludePattern;
+
+        /** todo */
+        private volatile String todo;
+
+        /** line number */
+        private long lineNumber;
+        
+        /** Initializes a review task. */
         private void initialize() {
 
             this.fileExclude = "";
-            this.lineExclude = "";
+            this.fileLineExclude = "";
             this.fileInclude = "";
             
-            String filter = this.filter.replaceAll("[\\x00-\\x06]", " ");
+            String filter = this.fileFilter.replaceAll("[\\x00-\\x06]", " ");
             filter = filter.replaceAll("\\s+([\\+\\-])\\s+", " \00$1 ");
             for (String pattern : filter.split("\\00")) {
                 if (pattern.startsWith("-")) {
                     if (pattern.matches("^.*\\[\\d+(:\\d+)*\\]\\s*$")) {
-                        if (this.lineExclude.length() > 0) this.lineExclude += ", ";
-                        this.lineExclude += pattern.replaceAll("^[\\+\\-]", "").trim();
+                        if (this.fileLineExclude.length() > 0) this.fileLineExclude += ", ";
+                        this.fileLineExclude += pattern.replaceAll("^[\\+\\-]", "").trim();
                     } else {
                         if (this.fileExclude.length() > 0) this.fileExclude += ", ";
                         this.fileExclude += pattern.replaceAll("^[\\+\\-]", "").trim();
@@ -332,20 +482,20 @@ public class Review {
                 this.fileExclude = this.fileExclude.replaceAll("\\*", "\\\\E.*\\\\Q");
                 this.fileExclude = this.fileExclude.replaceAll("\\?", "\\\\E.\\\\Q");
                 this.fileExclude = this.fileExclude.replaceAll(",\\s*", "\\\\E\\$)|(?i:\\\\Q");
-                this.fileExclude = "(?i:" + this.fileExclude + ")";
+                this.fileExclude = "(?m)(?i:" + this.fileExclude + ")";
                 this.fileExcludePattern = Pattern.compile(this.fileExclude);
             } else this.fileExcludePattern = null;
             
-            if (this.lineExclude.length() > 0) {
-                this.lineExclude = this.lineExclude.replace('\\', '/');
-                this.lineExclude = this.lineExclude.replaceAll("\\/+", "/");
-                this.lineExclude = Pattern.quote(this.lineExclude);
-                this.lineExclude = this.lineExclude.replaceAll("\\*", "\\\\E.*\\\\Q");
-                this.lineExclude = this.lineExclude.replaceAll("\\?", "\\\\E.\\\\Q");
-                this.lineExclude = this.lineExclude.replaceAll(",\\s*", "\\\\E\\$)|(?i:\\\\Q");
-                this.lineExclude = "(?i:" + this.lineExclude + ")";
-                this.lineExcludePattern = Pattern.compile(Task.decodeLineSeparators(this.lineExclude));
-            } else this.lineExcludePattern = null;
+            if (this.fileLineExclude.length() > 0) {
+                this.fileLineExclude = this.fileLineExclude.replace('\\', '/');
+                this.fileLineExclude = this.fileLineExclude.replaceAll("\\/+", "/");
+                this.fileLineExclude = Pattern.quote(this.fileLineExclude);
+                this.fileLineExclude = this.fileLineExclude.replaceAll("\\*", "\\\\E.*\\\\Q");
+                this.fileLineExclude = this.fileLineExclude.replaceAll("\\?", "\\\\E.\\\\Q");
+                this.fileLineExclude = this.fileLineExclude.replaceAll(",\\s*", "\\\\E\\$)|(?i:\\\\Q");
+                this.fileLineExclude = "(?m)(?i:" + this.fileLineExclude + ")";
+                this.fileLineExcludePattern = Pattern.compile(this.fileLineExclude);
+            } else this.fileLineExcludePattern = null;
 
             if (this.fileInclude.length() > 0) {
                 this.fileInclude = this.fileInclude.replace('\\', '/');
@@ -354,30 +504,36 @@ public class Review {
                 this.fileInclude = this.fileInclude.replaceAll("\\*", "\\\\E.*\\\\Q");
                 this.fileInclude = this.fileInclude.replaceAll("\\?", "\\\\E.\\\\Q");
                 this.fileInclude = this.fileInclude.replaceAll(",\\s*", "\\\\E\\$)|(?i:\\\\Q");
-                this.fileInclude = "(?i:" + this.fileInclude + ")";
+                this.fileInclude = "(?m)(?i:" + this.fileInclude + ")";
                 this.fileIncludePattern = Pattern.compile(this.fileInclude);
             } else this.fileIncludePattern = null;
 
-            this.expressionPatternFlat = this.expression;
-            this.expressionPatternFlat = this.expression.replaceAll("\\\\{2}", "\00");
-            this.expressionPatternFlat = this.expressionPatternFlat.replaceAll("\\\\R", "(?:(?:\\\\r\\\\n)|(?:\\\\n\\\\r)|[\\\\r\\\\n])");
-            this.expressionPatternFlat = this.expressionPatternFlat.replaceAll("\00", "\\\\");
-            this.expressionPattern = Pattern.compile(Task.decodeLineSeparators(this.expressionPatternFlat));
+            this.contentFilterPatternFlat = this.contentFilter;
+            this.contentFilterPatternFlat = this.contentFilter.replaceAll("\\\\{2}", "\00");
+            this.contentFilterPatternFlat = this.contentFilterPatternFlat.replaceAll("\\\\R", LINE_BREAK.replaceAll("\\\\", "\\\\\\\\"));
+            this.contentFilterPatternFlat = this.contentFilterPatternFlat.replaceAll("\00", "\\\\\\\\");
+            this.contentFilterPattern = Pattern.compile("(?m)" + this.contentFilterPatternFlat);
             
-            if (this.ignore != null) {
-                this.ignore = this.ignore.replaceAll("\\\\{2}", "\00");
-                this.ignore = this.ignore.replaceAll("\\\\R", "(?:(?:\\\\r\\\\n)|(?:\\\\n\\\\r)|[\\\\r\\\\n])");
-                this.ignore = this.ignore.replaceAll("\00", "\\\\");
-                this.ignorePattern = Pattern.compile(Task.decodeLineSeparators(this.ignore));
+            if (this.contentExclude != null) {
+                this.contentExclude = this.contentExclude.replaceAll("\\\\{2}", "\00");
+                this.contentExclude = this.contentExclude.replaceAll("\\\\R", LINE_BREAK.replaceAll("\\\\", "\\\\\\\\"));
+                this.contentExclude = this.contentExclude.replaceAll("\00", "\\\\\\\\");
+                this.contentExcludePattern = Pattern.compile("(?m)" + this.contentExclude);
             }
 
             if (!this.todo.matches("^[A-Z]+\\:.*$")) {
                 this.todo = this.todo.replaceAll("\\\\{2}", "\00");
                 this.todo = this.todo.replaceAll("\\\\R", System.getProperty("line.separator"));
-                this.todo = this.todo.replaceAll("\00", "\\\\");
+                this.todo = this.todo.replaceAll("\00", "\\\\\\\\");
             }
         }
 
+        /**
+         *  Performs the review task for a file.
+         *  All found files will be processed. The filte filters decide whether
+         *  a review must be performed.
+         *  @param file file
+         */
         private void perform(File file) {
             
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -396,39 +552,37 @@ public class Review {
                 for (boolean search = true; search;) {
                     
                     String content = new String(Review.readFile(file));
-                    content = content.replaceAll("[\\x00-\\x06]", " ");
-                    content = content.replace('\r', '\01');
-                    content = content.replace('\n', '\02');
+                    content = content.replaceAll(LINE_WHITE_SPACES, " ");
 
                     if (contentShadow.equals(content)) break;
                     contentShadow = content;
                     
-                    Matcher matcher = this.expressionPattern.matcher(content);
+                    Matcher matcher = this.contentFilterPattern.matcher(content);
 
                     while (true) {
                         
                         if (!matcher.find()) return;
 
-                        if (this.ignorePattern != null) {
+                        if (this.contentExcludePattern != null) {
                             String matcherText = content.substring(matcher.start(), matcher.end());
-                            Matcher ignorematcher = this.ignorePattern.matcher(matcherText);
+                            Matcher ignorematcher = this.contentExcludePattern.matcher(matcherText);
                             if (ignorematcher.find()) continue;
                         }
 
                         String before = content.substring(0, matcher.start());
-                        before = before.replaceAll("(?:\\x01\\x02)|(?:\\x02\\x01)|[\\x01\\x02]", "\00");
+                        before = before.replaceAll("(?m)" + LINE_BREAK, "\00");
                         
                         int line = (before.length() -before.replaceAll("\00", "").length()) +1;
                         
                         before = before.replaceAll("^.*\00", "");
                         int offset = before.replaceAll("^.*\00", "").length() +1;
 
-                        if (this.lineExcludePattern != null) {
+                        if (this.fileLineExcludePattern != null) {
                             String source = file.toString().replace('\\', '/') + "[" + line + "]";
-                            Matcher lineMatcher = this.lineExcludePattern.matcher(source);
+                            Matcher lineMatcher = this.fileLineExcludePattern.matcher(source);
                             if (lineMatcher.find()) continue;
                             source = file.toString().replace('\\', '/') + "[" + line + ":" + offset + "]";
-                            lineMatcher = this.lineExcludePattern.matcher(source);
+                            lineMatcher = this.fileLineExcludePattern.matcher(source);
                             if (lineMatcher.find()) continue;
                         }
                         
@@ -436,11 +590,11 @@ public class Review {
                         
                         if (!Review.verboseInfos) output.println(file);
                         
-                        output.println("\tfound #" + this.index + " in line " + line + ", character " + offset);
-                        output.println("\t" + this.expressionPatternFlat + (this.ignore != null ? " !" + this.ignore : ""));
+                        output.println("\tfound #" + this.lineNumber + " in line " + line + ", character " + offset);
+                        output.println("\t" + this.contentFilterPatternFlat + (this.contentExclude != null ? " !" + this.contentExclude : ""));
                         
                         String preview = content.substring(matcher.start());
-                        preview = preview.replaceAll("(?:\\x01\\x02)|(?:\\x02\\x01)|[\\x01\\x02]", "\00");
+                        preview = preview.replaceAll("(?m)" + LINE_BREAK, "\00");
                         preview = before + preview.replaceAll("\00.*$", "");
                         offset -= preview.length() -preview.replaceAll("^\\s+", "").length();
                         String mark = "";
@@ -452,10 +606,8 @@ public class Review {
                             String todoOut = this.todo;
                             if (this.todo.matches("^\\s*TEST|ECHO\\:.*$")) {
                                 todoOut = content.substring(matcher.start(), matcher.end());
-                                todoOut = todoOut.replaceAll(Task.decodeLineSeparators(this.expressionPatternFlat),
-                                    this.todo.replaceAll("\\r", "\01").replaceAll("\\n", "\02").replaceAll("\\x00", ""));
-                                todoOut = todoOut.replace('\01', '\r');
-                                todoOut = todoOut.replace('\02', '\n');
+                                todoOut = todoOut.replaceAll(this.contentFilterPatternFlat,
+                                    this.todo.replaceAll("\\x00", ""));
                             }
                             output.println("\t" + todoOut);
                             preview = preview.trim();
@@ -466,12 +618,10 @@ public class Review {
                         } else {
                             String contentBefore = content.substring(0, matcher.start());
                             String contentMatch = content.substring(matcher.start(), matcher.end());
-                            contentMatch = contentMatch.replaceAll(Task.decodeLineSeparators(this.expressionPatternFlat),
-                                this.todo.replaceAll("\\r", "\01").replaceAll("\\n", "\02").replaceAll("\\x00", ""));
+                            contentMatch = contentMatch.replaceAll(this.contentFilterPatternFlat,
+                                this.todo.replaceAll("\\x00", ""));
                             String contentFollow = content.substring(matcher.end());
                             content = contentBefore + contentMatch + contentFollow;
-                            content = content.replace('\01', '\r');
-                            content = content.replace('\02', '\n');
                             Review.writeFile(file, content.getBytes());
                             Review.corrections++;
                             output.println();
@@ -486,8 +636,8 @@ public class Review {
                 }
            } catch (Throwable throwable) {
                 Review.errors++;
-                output.println("\terror in #" + this.index + " " + throwable);
-                output.println("\t" + this.expressionPatternFlat);
+                output.println("\terror in #" + this.lineNumber + " " + throwable);
+                output.println("\t" + this.contentFilterPatternFlat);
                 print = System.err;
             } finally {
                 if (stream.size() <= 0 && Review.verboseInfos && Review.tasks.indexOf(this) == 0)
