@@ -16,17 +16,17 @@ nicht erfüllten Mustern.
 
 
 # Motivation
-In einem Projekt mit einer Vielzahl von Beteiligten gibt es eine Vielzahl von persönlichen
-und individuellen Vorlieben bei der Implementierung. Einige, wie z.B. Formatierung
-sind rein kosmetisch, andere wie z.B. die Fehlerbehandlung oder die Implementierung
+In einem Projekt mit vielen Beteiligten gibt es eine Vielzahl von persönlichen und
+individuellen Vorlieben bei der Implementierung. Einige, wie z.B. Formatierung sind
+rein kosmetisch, andere wie z.B. die Fehlerbehandlung oder die Implementierung
 und Verwendung der verschiedenen Schichten einer Software sind projekt- und architekturrelevant.
-In komplexen Projekten mit einer Vielzahl von Komponenten und Diensten fallen Verfehlungen
-und Irrwege erst sehr spät auf, da die Implementierung syntaktisch richtig, für
-eine Programmiersprache bekannte Anti-Pattern nicht gefunden und der Test der Implementierung
-erfolgreich durchlaufen wird.
+In komplexen Projekten mit zahlreichen Komponenten und Diensten fallen Verfehlungen
+und Irrwege oft erst sehr spät auf, da die Implementierung syntaktisch richtig,
+für eine Programmiersprache bekannte Anti-Pattern nicht gefunden werden und der
+Test der Implementierung erfolgreich durchlaufen wird.
 
-Erst mit Änderung und Erweiterung der Architektur und Schnittstellen oder bei der
-späteren  Fehleranalyse in der Abnahmephase werden Verfehlungen und Irrwege sichtbar.
+Erst Änderung und Erweiterung der Architektur und Schnittstellen oder bei der späteren 
+Fehleranalyse zeigen dann erst Verfehlungen und Irrwege auf.
 
 So sind Code- und Architektur-Reviews feste Bestandteile vom Qualitätsmanagement
 und laufen parallel zur Implementierung.
@@ -66,7 +66,7 @@ TODO:
 - regulärer Ausdruck der auf den Inhalt einer Datei angewandt wird
 - folgt dem ersten Leerzeichen ein ``!`` wird der Folgeausdruck als Ausnahme interpretiert:  
     ``Face\.\w+ !Face\.(xhtml|on(Show|Validate|Error|Event))``  
-  sucht nach: 
+  sucht nach:  
     ``Face\.\w+`` ignoriert aber _Face.xhtml_, _Face.onShow_, _Face.onValidate_, ...  
   __WICHTIG__:  
     Die Ausnahme wird nur innerhalb der Fundstelle geprüft.   
