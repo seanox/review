@@ -3,6 +3,6 @@
 	fixed:		%d
 	errors:		%d
 	duration:	%d s
-	reviews:	%d (%o Reviews/s)
-	files:		%d (%o Files/s)
-	volume:		%d MB (%o MB/s)
+	reviews:	%d (%d Reviews/s)
+	files:		%d (%d Files/s)
+	volume:		%d MB (%d MB/s)
