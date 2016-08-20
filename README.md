@@ -136,18 +136,22 @@ TODO:
 - Erweiterung: Ausgabe der Reviews in der Zusammenfassung
 
 ## 1.3
-TODO:
+- Korrektur: bei den Verarbeitung der Ausschlüsse
+- Optimierung: Dateifilter/Zeilenausschlüsse
+- Optimierung: in der Verarbeitung/Anwendung zeilenübergreifender Muster
+- Änderung: Startparameter ``-ì`` wird zu ``-v``
 
 ## 1.2.1
 - Erweiterung: in der Ausgabe während der Verarbeitung und der Zusammenfassung
 
 ## 1.2
+- Erweiterung: um Ausschlüsse bei Inhalten und Dateifiltern
 - Optimierung: Umstellung von Thread auf Worker
 - Optimierung: der nebenläufigen Verarbeitung
 - Optimierung: in der Mustererkennung
 
 ## 1.1
-- Erweiterung: Ausgabe der realen Zeilennummer im Fehlerfall eines Pattern
+- Erweiterung: Ausgabe der realen Zeilennummer im Fehlerfall eines Musters
 
 ## 1.0
 - Initiale Version
