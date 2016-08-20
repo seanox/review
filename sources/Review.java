@@ -20,6 +20,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -34,12 +35,12 @@ import java.util.regex.Pattern;
 /**
  *  Review, a text based code analyzer.<br>
  *  <br>
- *  Review 1.3.4 20160818<br>
+ *  Review 1.3.4 20160820<br>
  *  Copyright (C) 2016 Seanox Software Solutions<br>
  *  Alle Rechte vorbehalten.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.3.4 20160818
+ *  @version 1.3.4 20160820
  */
 public class Review {
     
@@ -231,6 +232,25 @@ public class Review {
     }
     
     /**
+     *  Returns the bytes of a resource file.
+     *  @param  resource
+     *  @return bytes of a resource file
+     *  @throws IOException
+     *      In the case when the access to the resources fails.
+     */
+    private static byte[] getResourceBytes(String resource) throws IOException {
+        
+        ClassLoader classLoader = Review.class.getClassLoader();
+        try (DataInputStream inputStream = new DataInputStream(classLoader.getResourceAsStream("resources/" + resource))) {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            byte[] bytes = new byte[65535];
+            for (int length = 0; (length = inputStream.read(bytes)) >= 0;)
+                buffer.write(bytes, 0, length);
+            return buffer.toByteArray();
+        }
+    }
+    
+    /**
      *  Returns the text of a resource file.
      *  @param  resource
      *  @return text of a resource file
@@ -239,17 +259,14 @@ public class Review {
      */
     private static String getResourceText(String resource) throws IOException {
         
-        ClassLoader classLoader = Review.class.getClassLoader();
-        File file = new File(classLoader.getResource("resources/" + resource).getFile());
-        String text = new String(Review.readFile(file));
-        
+        String text = new String(Review.getResourceBytes(resource));
         text = text.replaceAll("\\x20{4}", "\t");
         text = text.replaceAll("(?m)\\s+$", System.getProperty("line.separator"));
         text = text.replaceAll("\\s+$", "");
         
         return text;
     }
-
+    
     /**
      *  Main entry in the application.
      *  @param  options start parameter
