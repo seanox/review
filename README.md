@@ -3,16 +3,17 @@ Tool for programming languages independent code reviews.
 
 
 # Beschreibung
-Review wurde zur Prüfung und Korrektur stiller Standards entwickelt.
+Review wurde als textbasierte Code-Analyse zur Prüfung und Korrektur stiller Standards
+entwickelt.
 
-Stille Standards sind projekt- und architekturspezifische Vorgaben und Standards,
-die nicht durch die syntaktische und grammatikalische Prüfung eines Compilers abgedeckt
-werden, sondern mehr durch technische- und fachliche Konzepte definiert werden.
+Stille Standards sind projektspezifische sowie konzeptionelle Vorgaben und Standards
+sowie Richtlinien (Code of Conduct), die nicht durch die syntaktische und grammatikalische
+Prüfung eines Compilers abgedeckt werden und durch technische und fachliche Konzepte
+definiert werden.
 
-Das Werkzeug basiert komplett auf regulären Ausdrücken und Dateifiltern, es arbeitet
-rein textbasiert, findet, schliesst aus und ersetzt. Die Kombination von Finden
-und Ausschluss ermöglich die Suche nach nicht existierenden, unvollständigen sowie
-nicht erfüllten Mustern.
+Das Werkzeug basiert auf regulären Ausdrücken, Dateifiltern und kombiniert Muster
+und Ausschlüsse, was u.a. die Suche nach nicht existierenden, unvollständigen sowie
+nicht erfüllten Mustern ermöglich.
 
 
 # Motivation
@@ -151,7 +152,7 @@ TODO:
 - Optimierung: in der Mustererkennung
 
 ## 1.1
-- Erweiterung: Ausgabe der realen Zeilennummer im Fehlerfall eines Musters
+- Erweiterung: Ausgabe der Zeilennummer aus der pattern-Datei
 
 ## 1.0
 - Initiale Version
