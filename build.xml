@@ -16,6 +16,8 @@
   <property name="release.date" value="20160820"/>  
 
   <property name="releases" value="${workspace}/releases"/>
+  
+  <property name="test" value="${workspace}/test"/>
 
   <target name="initialize">
     <delete dir="${build}"/>
@@ -68,6 +70,7 @@
     <delete dir="${build.sources}"/>
     <delete dir="${build.classes}"/>
     <copy file="${workspace}/.license" tofile="${build}/license.txt"/> 
+    <copy file="${test}/anti-pattern.txt" todir="${build}"/> 
     <touch datetime="${release.date}" pattern="yyyyMMdd">
       <fileset dir="${build}"/>
     </touch>  
