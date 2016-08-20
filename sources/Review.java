@@ -621,7 +621,7 @@ public class Review {
                         if (!Review.performReplacement || this.todo.matches("^\\s*[A-Z]+\\:.*$")) {
                             print = System.err;
                             String todoOut = this.todo;
-                            if (this.todo.matches("^\\s*TEST|ECHO\\:.*$")) {
+                            if (this.todo.matches("^\\s*(TEST|ECHO)\\:.*$")) {
                                 todoOut = content.substring(matcher.start(), matcher.end());
                                 todoOut = todoOut.replaceAll(this.contentFilterPatternFlat,
                                     this.todo.replaceAll("\\x00", ""));
