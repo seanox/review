@@ -1,10 +1,5 @@
-# Review
-Tool for programming languages independent code reviews.
-
-
-# Beschreibung
-Review wurde als textbasierte Code-Analyse zur Prüfung und Korrektur stiller Standards
-entwickelt.
+# Seanox Review
+Eine textbasierte Code-Analyse zur Prüfung und Korrektur stiller Standards.
 
 Stille Standards sind projektspezifische sowie konzeptionelle Vorgaben und Standards
 sowie Richtlinien (Code of Conduct), die nicht durch die syntaktische und grammatikalische
@@ -16,7 +11,7 @@ und Ausschlüsse, was u.a. die Suche nach nicht existierenden, unvollständigen so
 nicht erfüllten Mustern ermöglich.
 
 
-# Motivation
+## Motivation
 In einem Projekt mit vielen Beteiligten gibt es eine Vielzahl von persönlichen und
 individuellen Vorlieben bei der Implementierung. Einige, wie z.B. Formatierung sind
 rein kosmetisch, andere wie z.B. die Fehlerbehandlung oder die Implementierung
@@ -36,7 +31,7 @@ Auffälligkeiten und Verfehlungen wiederholt zu finden, zu dokumentieren und wenn
 möglich zu korrigieren. Das sind die Erwartungen an Review.
 
 
-# Lizenz
+## Lizenz
 Seanox Software Solutions ist ein Open-Source-Projekt, im Folgenden Seanox Software
 Solutions oder kurz Seanox genannt. Diese Software unterliegt der Version 2 der
 GNU General Public License.
@@ -57,20 +52,32 @@ program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street
 Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-# Download
+## Funktionsumfang
+- Werkzeug für die Kommandozeile
+- textbasierte Suche mit regulären Ausdrücken mit Ein- und Ausschlüssen
+- Dateifiler mit Ein- und Ausschlüssen
+- einfache Definition der Reviews
+- parallele Ausführung der Reviews
+
+
+## Systemanforderungen
+- Java 8
+
+
+## Downloads
 [Seanox Review 1.3.4 (Build 20160820)](https://github.com/seanox/review/raw/master/releases/seanox-review-1_3_4.zip)
 
 
-# Verwendung
+## Verwendung
 TODO:
 
-## Pattern
+### Pattern
 TODO:
 
-### Aufbau
+#### Aufbau
 TODO:
 
-### Syntax
+#### Syntax
 - zeilenorientiert
 - Kommentare beginnen mit ``#``
 - maskieren von Zeichen ``\x<HEX>``  
@@ -81,14 +88,14 @@ TODO:
     ``VOID ``= leerer String beim Ersetzen  
     ``...  ``= Fortführung der Zeile
 
-#### Dateifilter
+##### Dateifilter
 - Backslash/Slash werden gleich behandelt
 - Platzhalter ``*`` und ``?`` werden unterstützt
 - Trennzeichen ``+`` (einbeziehen) und ``-``(ausschliessen)
 - Ausschlüsse auf Ebene der Fundstelle 
     ``file[line]`` oder ``file[line:char]``
 
-#### Suchmuster
+##### Suchmuster
 - regulärer Ausdruck der auf den Inhalt einer Datei angewandt wird
 - folgt dem ersten Leerzeichen ein ``!`` wird der Folgeausdruck als Ausnahme interpretiert:  
     ``Face\.\w+ !Face\.(xhtml|on(Show|Validate|Error|Event))``  
@@ -98,7 +105,7 @@ TODO:
     Liegen die Merkmale zur Unterscheidung ausserhalb, muss das Muster 
     entsprechend ausgedehnt werden.
 
-#### Aktion
+##### Aktion
 - Ausdruck zum Ersetzen (``$1`` - ``$9`` werden unterstützt)
 - beginnt eine Aktion mit ``INFO:`` wird nur eine Meldung ausgegeben
 - beginnt eine Aktion mit ``ECHO:`` oder ``TEST:`` wird nur eine Meldung mit der
@@ -106,17 +113,17 @@ TODO:
 - entspricht die Aktion ``VOID``, wird die Fundstelle durch einen leeren String ersetzt,
     was dem Löschen entspricht
 
-### Beispiele
+#### Beispiele
 TODO:
 
 
-# Best Practice / Erfolgsrezept
+## Best Practice / Erfolgsrezept
 TODO:
 
 
-# Historie
+## Historie
 
-## 1.3.4
+### 1.3.4
 - Erweiterung: integrierter Hilfe
 - Optimierung: allgemein in Grösse und Verarbeitungsgeschwindigkeit
 - Optimierung: besserer Verarbeitung von zeilenübergreifenden Mustern
@@ -124,35 +131,35 @@ TODO:
 - Änderung: Umstellung der Aktion zum Löschen auf das Schlüsselwort ``VOID``
 - Änderung: Umzug des Projekts nach GitHub
 
-## 1.3.3
+### 1.3.3
 - Erweiterung: mit der Aktion ``TEST:`` und ``ECHO:`` wird eine Vorschau der Ersetzung
     ausgegeben
 - Optimierung: allgemein in Grösse und Verarbeitungsgeschwindigkeit
 - Korrektur: allgemeine kleine Fehler ohne funktionale Auswirkung 
 
-## 1.3.2
+### 1.3.2
 - Erweiterung: mit der Aktion \x00 wird das Löschen ein Fundstelle unterstützt
 
-## 1.3.1
+### 1.3.1
 - Erweiterung: Ausgabe der Reviews in der Zusammenfassung
 
-## 1.3
+### 1.3
 - Korrektur: bei den Verarbeitung der Ausschlüsse
 - Optimierung: Dateifilter/Zeilenausschlüsse
 - Optimierung: in der Verarbeitung/Anwendung zeilenübergreifender Muster
 - Änderung: Startparameter ``-ì`` wird zu ``-v``
 
-## 1.2.1
+### 1.2.1
 - Erweiterung: in der Ausgabe während der Verarbeitung und der Zusammenfassung
 
-## 1.2
+### 1.2
 - Erweiterung: um Ausschlüsse bei Inhalten und Dateifiltern
 - Optimierung: Umstellung von Thread auf Worker
 - Optimierung: der nebenläufigen Verarbeitung
 - Optimierung: in der Mustererkennung
 
-## 1.1
+### 1.1
 - Erweiterung: Ausgabe der Zeilennummer aus der pattern-Datei
 
-## 1.0
+### 1.0
 - Initiale Version
