@@ -138,7 +138,7 @@ TODO:
 - Korrektur: allgemeine kleine Fehler ohne funktionale Auswirkung 
 
 ### 1.3.2
-- Erweiterung: mit der Aktion \x00 wird das Löschen ein Fundstelle unterstützt
+- Erweiterung: mit der Aktion ``\x00`` wird das Löschen ein Fundstelle unterstützt
 
 ### 1.3.1
 - Erweiterung: Ausgabe der Reviews in der Zusammenfassung
