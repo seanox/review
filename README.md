@@ -33,7 +33,7 @@ Auffälligkeiten und Verfehlungen wiederholt zu finden, zu dokumentieren und wenn
 möglich zu korrigieren. Das sind die Erwartungen an Review.
 
 
-## Features
+# Features
 - Werkzeug für die Kommandozeile
 - textbasierte Suche mit regulären Ausdrücken mit Ein- und Ausschlüssen
 - Dateifiler mit Ein- und Ausschlüssen
