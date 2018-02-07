@@ -40,12 +40,12 @@ import java.util.regex.PatternSyntaxException;
 /**
  *  Review, a text based code analyzer.<br>
  *  <br>
- *  Review 1.4.0 20180206<br>
+ *  Review 1.4.0 20180207<br>
  *  Copyright (C) 2018 Seanox Software Solutions<br>
  *  Alle Rechte vorbehalten.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.4.0 20180206
+ *  @version 1.4.0 20180207
  */
 public class Review {
     
@@ -636,9 +636,9 @@ public class Review {
                 if (conditions.size() == 0)
                     conditions.add(new Include(Condition.Type.CONTENT, Task.decode(rule)));
                 else if (rule.startsWith("+"))
-                    conditions.add(new Exclude(Condition.Type.CONTENT, Task.decode(rule.substring(1))));
-                else if (rule.startsWith("-"))
                     conditions.add(new Include(Condition.Type.CONTENT, Task.decode(rule.substring(1))));
+                else if (rule.startsWith("-"))
+                    conditions.add(new Exclude(Condition.Type.CONTENT, Task.decode(rule.substring(1))));
                 else throw new ReviewParserException("Invalid file condition found");
                 //the first condition must be an include.
                 if (conditions.size() == 1
@@ -745,7 +745,7 @@ public class Review {
             //  - use max. 20 characters
             //  - trim left white spaces
             //  - add ... if preview longer than 20 characters
-            String preview = content.substring(0, matcher.start());
+            String preview = content.substring(0, matcher.start() +offset);
             int loop = preview.length();
             while (loop > 0) {
                 if (preview.charAt(loop -1) == '\r'
@@ -845,14 +845,11 @@ public class Review {
 
                 Review.reviews++;
                 
-                String contentShadow = "";
                 for (int offset = 0; true; offset++) {
                     
                     String content = new String(Review.readFile(file));
-                    if (contentShadow.equals(content)
-                            || offset >= content.length())
+                    if (offset >= content.length())
                         break;
-                    contentShadow = content;
                     
                     Matcher matcher = this.conditions[0].pattern.matcher(content.substring(offset));
                     if (!matcher.find())
@@ -861,7 +858,7 @@ public class Review {
                     String match = content.substring(matcher.start() +offset, matcher.end() +offset);
                     if (this.conditions.length > 1) {
                         boolean relevant = true;
-                        for (Condition condition : Arrays.copyOfRange(this.conditions, 1, this.conditions.length -1)) {
+                        for (Condition condition : Arrays.copyOfRange(this.conditions, 1, this.conditions.length)) {
                             Matcher submatcher = condition.pattern.matcher(match);
                             boolean exists = submatcher.find();
                             if ((condition instanceof Exclude && exists)
@@ -889,6 +886,7 @@ public class Review {
                     
                     if (this.action.startsWith("INFO:")) {
                         output.println(this.action);
+                        offset += matcher.end();
                     } else if (this.action.startsWith("TEST:")
                             || !Options.replace) {
                         match = match.replaceAll(this.conditions[0].rule, this.action);
@@ -906,7 +904,8 @@ public class Review {
                             if (test.length() > 80)
                                 test = test.substring(0, 77) + "...";
                             output.println(test);
-                        }                        
+                        }                       
+                        offset += matcher.end();
                     } else if (this.action.startsWith("VOID:")) {
                         content = content.substring(0, matcher.start() +offset) + content.substring(matcher.end() +offset);
                         Review.writeFile(file, content.getBytes());
@@ -918,9 +917,8 @@ public class Review {
                         Review.writeFile(file, content.getBytes());
                         Review.corrections++;
                         output.println("CORRECTED");
+                        offset += match.length();
                     }
-                    
-                    offset += matcher.end();
                     
                     Review.print(stream.toString());
                 }
