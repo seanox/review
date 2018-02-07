@@ -3,6 +3,5 @@ usage: java -jar review.jar <options> <pattern>
 	-h help
 	-d directory (default work directory)
 	-x perform replacement
-	-v verbose infos
 
 	pattern, file with (anti)pattern

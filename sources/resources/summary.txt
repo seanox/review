@@ -1,4 +1,3 @@
-
 	found:		%d
 	fixed:		%d
 	errors:		%d

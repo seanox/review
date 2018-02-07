@@ -1,45 +1,51 @@
 
-	Syntax
+The anti-pattern file is a text file that is read line by line.
+A hash at the beginning of a line (blank characters are allowed before) marks
+the line as a comment. Comments are not read and skipped. Means they are
+processed as if the line does not exist.
+Characters can be encoded hexadecimal.
 
-	- line oriented
-	- comments start with #
-	- escaping of characters \x<HEX>
-	  \x23 = #
-	  \x20 = space
-	- more commands
-	  \R	line breaks (cross-platform)
-	  VOID	empty string when replacing (delete)
-	  ...	continuation of the line
+    e.g. \x<HEX> (\x23 = #, \x20 = space) 
 
-	A (anti)pattern has three lines.
+The anti-pattern are organized in sections.
+A section begins after a blank line or if the line does not begin with a blank
+character. Therefore, the subsequent lines of a section are indented.
+If a line is to be continued exactly, the line must begin with blanks and '...'.
+The line is then continued with the first character after '...'.
 
-	1. File Filter
+The section of a anti-pattern has three and more lines.
 
-	- backslash / slash are identical
-	- placeholders * and ? are supported
-	- delimiter + (include) and - (exclude)
-	- exclusions at the level of place of finding
-	  file[line] or file[line:char]
+    line 1: file filter
 
-	2. Search Pattern
+- space characters are separators
+- every part of the filter must start with a directive
+- backslash / slash are identical
+- placeholders * and ? are supported
+- delimiter + (include) and - (exclude)
 
-	- regular expression (searches the complete content)
-	- follows the after first space an ! the following expression is
-	  interpreted as exclusion:
-		  Face\.\w+ !Face\.(xhtml|on(Show|Validate|Error|Event))
-	  search: Face\.\w+, ignored: Face.xhtml, Face.onShow, Face.onValidate, ...
-		  IMPORTANT:
-	  The exclusion is only searched within the place of finding.
-	  If located the exclusion outside, then the pattern must be extended.
+    line 2 and more: primary pattern, optional partial patterns (subpatterns)
+    
+- primary pattern is the main pattern (always an include)
+  The match found is then searched for Partial patterns.
+  Partial patterns can be inclusions and exclusions. Inclusions must begin with
+  + and - begin exclusions. The primary pattern has no directive.
+  All partial patterns must be true, only then is the action executed.
+- patterns are separated by white spaces
+  In a pattern, spaces must be encoded hexadecimal.
+  
+    last line: action
+    
+The action is primarily a regular replacement, corresponding to the search
+pattern. When replacing, the groups and the backward references of the primary
+pattern can be used. Partial patterns cannot be used.
 
-	3. Action
+    The following additional actions are supported:
+    
+    TEST: <replacment>
+Displays a preview of the replacement without performing the replacement.    
+    
+    VOID:
+Deletes the match.
 
-	- replace expression ($1 - $9 are supported)
-	- action starts with INFO: only one message is displayed
-	- action starts with ECHO: or TEST: a preview of the replacement is
-	  displayed
-	- action is VOID the the reference is replaced by an empty string, which is
-	  equal to the deletion
-
-	Lines can be continue if they end with ... and after line breaks begin again
-	with ... then the lines are used as one line.
+    INFO: <message>
+Displays a information about a location without performing a replacement.
