@@ -67,8 +67,8 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
 # Downloads
-[Seanox Review 1.4.0](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.0.zip)  
-[Seanox Review Sources 1.4.0](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.0-src.zip) 
+[Seanox Review 1.4.1](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.1.zip)  
+[Seanox Review Sources 1.4.1](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.1-src.zip) 
 
 
 # Changes (Change Log)
