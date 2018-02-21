@@ -72,15 +72,8 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
 # Changes (Change Log)
-## 1.4.0 20180207 (summary of the current version)  
-CR: General revision of the application  
-CR: General optimization for GitHub  
-CR: Filter - Enhancement of the syntax to continue lines with '...'  
-CR: Logging - Enhancement of output  
-CR: Action - Replace symbol R is no longer supported  
-CR: Action - VOID has been changed to VOID:  
-CR: Application - Programm argument -v (verbose) is no longer supported  
-CR: File Filter - The number of line/character in conditions are no longer supported.  
+## 1.4.1 20180221 (summary of the current version)  
+BF: Correction of the preview and continuation when replacing  
 
 [Read more](https://raw.githubusercontent.com/seanox/review/master/CHANGES)
 

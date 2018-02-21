@@ -40,12 +40,12 @@ import java.util.regex.PatternSyntaxException;
 /**
  *  Review, a text based code analyzer.<br>
  *  <br>
- *  Review 1.4.0 20180207<br>
+ *  Review 1.4.1 20180221<br>
  *  Copyright (C) 2018 Seanox Software Solutions<br>
  *  Alle Rechte vorbehalten.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.4.0 20180207
+ *  @version 1.4.1 20180221
  */
 public class Review {
     
@@ -284,6 +284,11 @@ public class Review {
         //for testing: 
         //  options = new String[] {"-x", "-d", "./test", "./test/anti-pattern.txt"};
         //  options = new String[] {"-d", "./test", "./test/anti-pattern.txt"};
+        //  options = new String[] {"-h"};
+
+        //for testing: 
+        //  options = new String[] {"-x", "-d", "./", "./review/tools/review/anti-pattern.txt"};
+        //  options = new String[] {"-d", "./", "./review/tools/review/anti-pattern.txt"};
         //  options = new String[] {"-h"};
         
         File path = null;
@@ -771,10 +776,16 @@ public class Review {
                 match = match.replaceAll("(?s)^\\s+", "");
             
             if (preview.length() > 40
-                    && match.length() > 40)
-                preview = "..." + preview.substring(0, 40 -3);
-            if (preview.length() + match.length() > 80)
-                match = match.substring(0, 80 -3 -preview.length()) + "...";
+                    && match.length() > 40) {
+                preview = "..." + preview.substring(preview.length() -40 -3, preview.length());
+                match = match.substring(0, 40 -3) + "...";
+            } else if (preview.length() + match.length() > 80) {
+                if (preview.length() > 40) {
+                    preview = "..." + preview.substring(preview.length() -(80 -3 -match.length()), preview.length());
+                } else if (match.length() > 40) {
+                    match = match.substring(0, 80 -3 -preview.length()) + "...";
+                }
+            }
 
             if (match.matches("^\\s*$"))
                 return null;
@@ -917,7 +928,7 @@ public class Review {
                         Review.writeFile(file, content.getBytes());
                         Review.corrections++;
                         output.println("CORRECTED");
-                        offset += match.length();
+                        offset += matcher.start() +match.length();
                     }
                     
                     Review.print(stream.toString());
