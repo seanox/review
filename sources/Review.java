@@ -40,12 +40,12 @@ import java.util.regex.PatternSyntaxException;
 /**
  *  Review, a text based code analyzer.<br>
  *  <br>
- *  Review 1.4.1 20180221<br>
+ *  Review 1.4.2 20180307<br>
  *  Copyright (C) 2018 Seanox Software Solutions<br>
  *  Alle Rechte vorbehalten.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.4.1 20180221
+ *  @version 1.4.2 20180307
  */
 public class Review {
     
@@ -878,8 +878,11 @@ public class Review {
                                 break;
                             }
                         }
-                        if (!relevant)
-                            break;
+                        
+                        if (!relevant) {
+                            offset += matcher.start();
+                            continue;
+                        }
                     }
 
                     Review.founds++;
