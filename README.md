@@ -74,7 +74,7 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 # Changes (Change Log)
 ## 1.4.2 2018xxx (summary of the next version)  
 BF: Correction when continuing the search  
-BF: Correction for patterns with only whitespaces (strn...)  
+BF: Correction for patterns with only whitespaces (\s\t\r\n...)  
 
 [Read more](https://raw.githubusercontent.com/seanox/review/master/CHANGES)
 
