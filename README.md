@@ -72,8 +72,9 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
 # Changes (Change Log)
-## 1.4.1 20180221 (summary of the current version)  
-BF: Correction of the preview and continuation when replacing  
+## 1.4.2 2018xxx (summary of the next version)  
+BF: Correction when continuing the search  
+BF: Correction for patterns with only whitespaces (strn...)  
 
 [Read more](https://raw.githubusercontent.com/seanox/review/master/CHANGES)
 

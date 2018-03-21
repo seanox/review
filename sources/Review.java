@@ -511,9 +511,7 @@ public class Review {
 
                 case CONTENT:
 
-                    rule = rule.trim();
                     this.rule = rule;
-                    
                     this.pattern = Pattern.compile(this.rule);
                     
                     break;
