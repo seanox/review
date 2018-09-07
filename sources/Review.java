@@ -40,12 +40,12 @@ import java.util.regex.PatternSyntaxException;
 /**
  *  Review, a text based code analyzer.<br>
  *  <br>
- *  Review 1.4.2 20180307<br>
+ *  Review 1.4.2 20180907<br>
  *  Copyright (C) 2018 Seanox Software Solutions<br>
  *  Alle Rechte vorbehalten.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.4.2 20180307
+ *  @version 1.4.2 20180907
  */
 public class Review {
     
@@ -282,14 +282,14 @@ public class Review {
             throws Exception {
     
         //for testing: 
-        //  options = new String[] {"-x", "-d", "./test", "./test/anti-pattern.txt"};
-        //  options = new String[] {"-d", "./test", "./test/anti-pattern.txt"};
-        //  options = new String[] {"-h"};
+        //options = new String[] {"-x", "-d", "./test", "./test/anti-pattern.txt"};
+        //options = new String[] {"-d", "./test", "./test/anti-pattern.txt"};
+        //options = new String[] {"-h"};
 
         //for testing: 
-        //  options = new String[] {"-x", "-d", "./", "./review/tools/review/anti-pattern.txt"};
-        //  options = new String[] {"-d", "./", "./review/tools/review/anti-pattern.txt"};
-        //  options = new String[] {"-h"};
+        //options = new String[] {"-x", "-d", "./", "./review/tools/review/anti-pattern.txt"};
+        //options = new String[] {"-d", "./", "./review/tools/review/anti-pattern.txt"};
+        //options = new String[] {"-h"};
         
         File path = null;
         String pattern = null;
@@ -635,7 +635,6 @@ public class Review {
             String expression = String.join(" ", expressions).trim();
             List<Condition> conditions = new ArrayList<>();
             for (String rule : expression.split("\\s+")) {
-
                 if (conditions.size() == 0)
                     conditions.add(new Include(Condition.Type.CONTENT, Task.decode(rule)));
                 else if (rule.startsWith("+"))
@@ -775,8 +774,8 @@ public class Review {
             
             if (preview.length() > 40
                     && match.length() > 40) {
-                preview = "..." + preview.substring(preview.length() -40 -3, preview.length());
-                match = match.substring(0, 40 -3) + "...";
+                preview = "..." + preview.substring(Math.max(0, preview.length() -40 -3), preview.length());
+                match = match.substring(0, Math.min(match.length(), 40 -3)) + "...";
             } else if (preview.length() + match.length() > 80) {
                 if (preview.length() > 40) {
                     preview = "..." + preview.substring(preview.length() -(80 -3 -match.length()), preview.length());
