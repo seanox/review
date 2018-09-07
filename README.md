@@ -67,14 +67,15 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
 # Downloads
-[Seanox Review 1.4.1](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.1.zip)  
-[Seanox Review Sources 1.4.1](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.1-src.zip) 
+[Seanox Review 1.4.2](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.2.zip)  
+[Seanox Review Sources 1.4.2](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.2-src.zip) 
 
 
 # Changes (Change Log)
-## 1.4.2 2018xxx (summary of the next version)  
+## 1.4.2 20180907 (summary of the current version)  
 BF: Correction when continuing the search  
-BF: Correction for patterns with only whitespaces (\s\t\r\n...)  
+BF: Correction for patterns with only whitespaces (strn...)  
+BF: Correction in the preview of the found places  
 
 [Read more](https://raw.githubusercontent.com/seanox/review/master/CHANGES)
 
