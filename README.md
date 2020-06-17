@@ -1,3 +1,17 @@
+<p>
+  <a href="https://github.com/seanox/review/pulls"
+      title="Development is waiting for new issues / requests / ideas">
+    <img src="https://img.shields.io/badge/development-passive-blue?style=for-the-badge">
+  </a>
+  <a href="https://github.com/seanox/review/issues">
+    <img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge">
+  </a>
+  <a href="http://seanox.de/contact">
+    <img src="https://img.shields.io/badge/support-active-green?style=for-the-badge">
+  </a>
+</p>
+
+
 # Description
 Seanox Review, eine textbasierte Code-Analyse zur Prüfung und Korrektur stiller
 Standards.
@@ -35,7 +49,7 @@ möglich zu korrigieren. Das sind die Erwartungen an Review.
 
 # Features
 - Werkzeug für die Kommandozeile
-- textbasierte Suche mit regulären Ausdrücken mit Ein- und Ausschlüssen
+- textbasiertes Suchen und Ersetzen mit regulären Ausdrücken mit Ein- und Ausschlüssen
 - Dateifiler mit Ein- und Ausschlüssen
 - einfache Definition der Reviews
 - parallele Ausführung der Reviews
@@ -81,7 +95,22 @@ BF: Correction in the preview of the found places
 
 
 # Contact
-[Support](http://seanox.de/contact?support)  
-[Development](http://seanox.de/contact?development)  
-[Project](http://seanox.de/contact?service)  
-[Page](http://seanox.de/contact)  
+[Issues](https://github.com/seanox/review/issues)  
+[Requests](https://github.com/seanox/review/pulls)  
+[Mail](http://seanox.de/contact)
+
+
+# Thanks!
+<img src="https://raw.githubusercontent.com/seanox/seanox/master/sources/resources/images/thanks.png">
+
+[JetBrains](https://www.jetbrains.com/?from=seanox)  
+Sven Lorenz  
+Andreas Mitterhofer  
+[novaObjects GmbH](https://www.novaobjects.de)  
+Leo Pelillo  
+Gunter Pfannm&uuml;ller  
+Annette und Steffen Pokel  
+Edgar R&ouml;stle  
+Michael S&auml;mann  
+Markus Schlosneck  
+[T-Systems International GmbH](https://www.t-systems.com)
