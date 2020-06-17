@@ -61,7 +61,7 @@ Seanox Software Solutions oder kurz Seanox genannt.
 
 Diese Software unterliegt der Version 2 der GNU General Public License.
 
-Copyright (C) 2018 Seanox Software Solutions
+Copyright (C) 2020 Seanox Software Solutions
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of version 2 of the GNU General Public License as published by the
@@ -86,10 +86,9 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
 # Changes (Change Log)
-## 1.4.2 20180907 (summary of the current version)  
-BF: Correction when continuing the search  
-BF: Correction for patterns with only whitespaces (strn...)  
-BF: Correction in the preview of the found places  
+## 1.5.0 2020xxxx (summary of the next version)  
+CR: Build: Uniform use of ./LICENSE and ./CHANGES  
+CR: Build: Update to use Java 11  
 
 [Read more](https://raw.githubusercontent.com/seanox/review/master/CHANGES)
 
