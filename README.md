@@ -86,9 +86,11 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
 # Changes (Change Log)
-## 1.5.0 2020xxxx (summary of the next version)  
-CR: Build: Uniform use of ./LICENSE and ./CHANGES  
-CR: Build: Update to use Java 11  
+## 1.4.3 2020xxxx (summary of the next version)  
+BF: Correction of repeated/multiple searches and replacements in the same file  
+CR: Update of the comment format  
+CR: Uniform use of ./LICENSE and ./CHANGES  
+CR: Update to use Java 11  
 
 [Read more](https://raw.githubusercontent.com/seanox/review/master/CHANGES)
 

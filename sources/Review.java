@@ -1,23 +1,23 @@
 /**
- *  LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- *  im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- *  Diese Software unterliegt der Version 2 der GNU General Public License.
+ * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
+ * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
+ * Diese Software unterliegt der Version 2 der GNU General Public License.
  *
- *  Review, text based code analyzer
- *  Copyright (C) 2018 Seanox Software Solutions
+ * Review, text based code analyzer
+ * Copyright (C) 2020 Seanox Software Solutions
  *
- *  This program is free software; you can redistribute it and/or modify it
- *  under the terms of version 2 of the GNU General Public License as published
- *  by the Free Software Foundation.
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of version 2 of the GNU General Public License as published by the
+ * Free Software Foundation.
  *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- *  more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- *  You should have received a copy of the GNU General Public License along
- *  with this program; if not, write to the Free Software Foundation, Inc.,
- *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -38,14 +38,14 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- *  Review, a text based code analyzer.<br>
- *  <br>
- *  Review 1.4.2 20180907<br>
- *  Copyright (C) 2018 Seanox Software Solutions<br>
- *  Alle Rechte vorbehalten.
+ * Review, a text based code analyzer.<br>
+ * <br>
+ * Review 1.4.3 20200618<br>
+ * Copyright (C) 2020 Seanox Software Solutions<br>
+ * Alle Rechte vorbehalten.
  *
- *  @author  Seanox Software Solutions
- *  @version 1.4.2 20180907
+ * @author  Seanox Software Solutions
+ * @version 1.4.3 20200618
  */
 public class Review {
     
@@ -93,8 +93,8 @@ public class Review {
     }
     
     /**
-     *  Writes a message to the system output stream.
-     *  @param message message
+     * Writes a message to the system output stream.
+     * @param message message
      */
     private static void print(Object message) {
         
@@ -109,20 +109,20 @@ public class Review {
     }
 
     /**
-     *  Writes a formated message to the system output stream.
-     *  @param message message
-     *  @param values  value(s) 
+     * Writes a formated message to the system output stream.
+     * @param message message
+     * @param values  value(s) 
      */
     private static void print(String message, Object... values) {
         Review.print(String.format(message, values));
     }
     
     /**
-     *  Reads the contents of a file.
-     *  @param  file file
-     *  @return the contents of a file as byte array
-     *  @throws IOException
-     *      In the case of the failed file access.
+     * Reads the contents of a file.
+     * @param  file file
+     * @return the contents of a file as byte array
+     * @throws IOException
+     *     In the case of the failed file access.
      */
     private static byte[] readFile(File file)
             throws IOException {
@@ -134,11 +134,11 @@ public class Review {
     }
     
     /**
-     *  Writes the contents in a file.
-     *  @param  file  file
-     *  @param  bytes content
-     *  @throws IOException
-     *      In the case of the failed file access.
+     * Writes the contents in a file.
+     * @param  file  file
+     * @param  bytes content
+     * @throws IOException
+     *     In the case of the failed file access.
      */
     private static void writeFile(File file, byte[] bytes)
             throws IOException {
@@ -148,13 +148,13 @@ public class Review {
     }
     
     /**
-     *  Reads all taks from a file.
-     *  @param  file anti-pattern file
-     *  @return array of created and prepared task
-     *  @throws IOException
-     *      In the case of the failed file access.
-     *  @throws ReviewParserException
-     *      In case of invalid syntax or structure.
+     * Reads all taks from a file.
+     * @param  file anti-pattern file
+     * @return array of created and prepared task
+     * @throws IOException
+     *     In the case of the failed file access.
+     * @throws ReviewParserException
+     *     In case of invalid syntax or structure.
      */    
     private static Task[] readTasks(File file)
             throws IOException, ReviewParserException {
@@ -183,9 +183,9 @@ public class Review {
     }
     
     /**
-     *  Requests and locks a worker for a file.
-     *  @param  file file
-     *  @return the established worker, otherwise {@code null}
+     * Requests and locks a worker for a file.
+     * @param  file file
+     * @return the established worker, otherwise {@code null}
      */
     private static Worker lockWorker(File file) {
         
@@ -196,8 +196,8 @@ public class Review {
     }
     
     /**
-     *  Checks and searchs active workers.
-     *  @return {@code true} when active worker found
+     * Checks and searchs active workers.
+     * @return {@code true} when active worker found
      */
     private static boolean activeWorker() {
         
@@ -208,11 +208,10 @@ public class Review {
     }
     
     /**
-     *  Scans the file system for files for the review and established workers
-     *  to perform.
-     *  @param  path path
-     *  @throws Exception
-     *      In the case of occurring errors.
+     * Scans the file system for files to review and available workers.
+     * @param  path path
+     * @throws Exception
+     *     In the case of occurring errors.
      */
     private static void seek(File path)
             throws Exception {
@@ -235,11 +234,11 @@ public class Review {
     }
     
     /**
-     *  Returns the bytes of a resource file.
-     *  @param  resource
-     *  @return bytes of a resource file
-     *  @throws IOException
-     *      In the case when the access to the resources fails.
+     * Returns the bytes of a resource file.
+     * @param  resource
+     * @return bytes of a resource file
+     * @throws IOException
+     *     In the case when the access to the resources fails.
      */
     private static byte[] getResourceBytes(String resource)
             throws IOException {
@@ -255,11 +254,11 @@ public class Review {
     }
     
     /**
-     *  Returns the text of a resource file.
-     *  @param  resource
-     *  @return text of a resource file
-     *  @throws IOException
-     *      In the case when the access to the resources fails.
+     * Returns the text of a resource file.
+     * @param  resource
+     * @return text of a resource file
+     * @throws IOException
+     *     In the case when the access to the resources fails.
      */
     private static String getResourceText(String resource)
             throws IOException {
@@ -273,14 +272,19 @@ public class Review {
     }
     
     /**
-     *  Main entry in the application.
-     *  @param  options start parameter
-     *  @throws Exception
-     *      In the case of occurring errors.
+     * Main entry in the application.
+     * @param  options start parameter
+     * @throws Exception
+     *     In the case of occurring errors.
      */
     public static void main(String[] options)
             throws Exception {
-    
+
+        //for testing: 
+        options = new String[] {"-x", "-d", "../review-test/compare", "../review-test/anti-pattern.txt"};
+        //options = new String[] {"-d", "../review-test/compare", "../review-test/anti-pattern.txt"};
+        //options = new String[] {"-h"};
+        
         //for testing: 
         //options = new String[] {"-x", "-d", "./test", "./test/anti-pattern.txt"};
         //options = new String[] {"-d", "./test", "./test/anti-pattern.txt"};
@@ -398,10 +402,10 @@ public class Review {
     }
     
     /** 
-     *  Inner class for a Worker. 
-     *  Worker are (re)used as thread and perform the analysis of a file.
-     *  Review has a fixed number of workers, which reviews are assigned.
-     *  A review is a set of tasks.
+     * Inner class for a Worker. 
+     * Worker are (re)used as thread and perform the analysis of a file.
+     * Review has a fixed number of workers, which reviews are assigned.
+     * A review is a set of tasks.
      */
     private static class Worker extends Thread {
         
@@ -412,9 +416,9 @@ public class Review {
         private volatile long timing;
         
         /**
-         *  locks the worker for a file.
-         *  @param  file file
-         *  @return {@code true}, if the worker could be established
+         * locks the worker for a file.
+         * @param  file file
+         * @return {@code true}, if the worker could be established
          */
         private boolean lock(File file) {
 
@@ -425,10 +429,10 @@ public class Review {
         }
         
         /**
-         *  Interrupts the processing with maximum exploitation of the time
-         *  slice of the operating system.
-         *  @throws InterruptedException
-         *       In the case where the current thread is interrupted.
+         * Interrupts the processing with maximum exploitation of the time slice
+         * of the operating system.
+         * @throws InterruptedException
+         *      In the case where the current thread is interrupted.
          */
         private void sleepSmart()
                 throws InterruptedException {
@@ -470,8 +474,8 @@ public class Review {
     }
     
     /**
-     *  Internal class to use conditions.
-     *  Conditions are inclusions and exclusions for files and content.
+     * Internal class to use conditions.
+     * Conditions are inclusions and exclusions for files and content.
      */
     private static class Condition {
 
@@ -485,9 +489,9 @@ public class Review {
         private Pattern pattern;
         
         /**
-         *  Constructor, creates a new Condition object. 
-         *  @param type type
-         *  @param rule rule
+         * Constructor, creates a new Condition object. 
+         * @param type type
+         * @param rule rule
          */
         private Condition(Type type, String rule) {
             
@@ -547,8 +551,8 @@ public class Review {
     }
 
     /**
-     *  Inner class for a Task.
-     *  A Task is one part of the code analysis.
+     * Inner class for a Task.
+     * A Task is one part of the code analysis.
      */
     private static class Task {
 
@@ -570,11 +574,11 @@ public class Review {
         }
         
         /**
-         *  Decodes hexadecimal characters in a text.
-         *  @param  text text to be decoded
-         *  @return the decods text
-         *  @throws UnsupportedEncodingException
-         *      In case of invalid encoding.
+         * Decodes hexadecimal characters in a text.
+         * @param  text text to be decoded
+         * @return the decods text
+         * @throws UnsupportedEncodingException
+         *     In case of invalid encoding.
          */
         private static String decode(String text)
                 throws UnsupportedEncodingException {
@@ -588,13 +592,13 @@ public class Review {
         }
         
         /**
-         *  Creates file conditions for the passed expression(s).
-         *  @param  expression expression(s)
-         *  @return content file for the passed expression(s)
-         *  @throws ReviewParserException
-         *      In case if errors are found in the expression(s).
-         *  @throws UnsupportedEncodingException
-         *      In case of invalid encoding.
+         * Creates file conditions for the passed expression(s).
+         * @param  expression expression(s)
+         * @return content file for the passed expression(s)
+         * @throws ReviewParserException
+         *     In case if errors are found in the expression(s).
+         * @throws UnsupportedEncodingException
+         *     In case of invalid encoding.
          */        
         private static Condition[] parseFileConditions(String expression)
                 throws ReviewParserException, UnsupportedEncodingException {
@@ -617,13 +621,13 @@ public class Review {
         }
         
         /**
-         *  Creates content conditions for the passed expression(s).
-         *  @param  expressions expression(s)
-         *  @return content conditions for the passed expression(s)
-         *  @throws ReviewParserException
-         *      In case if errors are found in the expression(s).
-         *  @throws UnsupportedEncodingException
-         *      In case of invalid encoding.
+         * Creates content conditions for the passed expression(s).
+         * @param  expressions expression(s)
+         * @return content conditions for the passed expression(s)
+         * @throws ReviewParserException
+         *     In case if errors are found in the expression(s).
+         * @throws UnsupportedEncodingException
+         *     In case of invalid encoding.
          */
         private static Condition[] parseContentConditions(String... expressions)
                 throws ReviewParserException, UnsupportedEncodingException {
@@ -652,9 +656,9 @@ public class Review {
         }
         
         /**
-         *  Creates a file filter based on the passed conditions.
-         *  @param  conditions condition(s)
-         *  @return a file filter based on the passed conditions
+         * Creates a file filter based on the passed conditions.
+         * @param  conditions condition(s)
+         * @return a file filter based on the passed conditions
          */
         private static FileFilter createFileFilter(Condition[] conditions) {
             
@@ -688,11 +692,11 @@ public class Review {
         }
         
         /**
-         *  Creates a task based on the information of the passed section.
-         *  @param  section
-         *  @return a task based on the information of the passed section
-         *  @throws ReviewParserException
-         *      In case if errors are found in the section.
+         * Creates a task based on the information of the passed section.
+         * @param  section
+         * @return a task based on the information of the passed section
+         * @throws ReviewParserException
+         *     In case if errors are found in the section.
          */
         private static Task parse(String section)
                 throws ReviewParserException {
@@ -730,11 +734,11 @@ public class Review {
         }
         
         /**
-         *  Creates a preview/snapshot of the place of the match.
-         *  @param  matcher matcher
-         *  @param  content content
-         *  @param  offset  offset
-         *  @return a preview/snapshot of the place of the match
+         * Creates a preview/snapshot of the place of the match.
+         * @param  matcher matcher
+         * @param  content content
+         * @param  offset  offset
+         * @return a preview/snapshot of the place of the match
          */
         private static String previewMatch(Matcher matcher, String content, int offset) {
             
@@ -794,11 +798,11 @@ public class Review {
         }
         
         /**
-         *  Locates the line of the first character of the match.
-         *  @param  matcher matcher
-         *  @param  content content
-         *  @param  offset  offset
-         *  @return the line of the first character of the match
+         * Locates the line of the first character of the match.
+         * @param  matcher matcher
+         * @param  content content
+         * @param  offset  offset
+         * @return the line of the first character of the match
          */        
         private static int locateMatchLine(Matcher matcher, String content, int offset) {
             
@@ -815,11 +819,11 @@ public class Review {
         }
 
         /**
-         *  Locates the line position of the first character of the match.
-         *  @param  matcher matcher
-         *  @param  content content
-         *  @param  offset  offset
-         *  @return the line position of the first character of the match
+         * Locates the line position of the first character of the match.
+         * @param  matcher matcher
+         * @param  content content
+         * @param  offset  offset
+         * @return the line position of the first character of the match
          */
         private static int locateMatchCharacter(Matcher matcher, String content, int offset) {
             
@@ -837,10 +841,10 @@ public class Review {
         }
 
         /**
-         *  Performs the review task for a file.
-         *  All found files will be processed. The filte filters decide whether
-         *  a review must be performed.
-         *  @param file file
+         * Performs the review task for a file.
+         * All found files will be processed.
+         * The filter filters decide whether a review must be performed.
+         * @param file file
          */
         private void perform(File file) {
             
@@ -851,89 +855,99 @@ public class Review {
                 if (!this.filter.accept(file))
                     return; 
 
-                Review.reviews++;
+                String compare = "";
+                String content = "";
                 
-                for (int offset = 0; true; offset++) {
+                while (true) {
+
+                    Review.reviews++;
                     
-                    String content = new String(Review.readFile(file));
-                    if (offset >= content.length())
-                        break;
-                    
-                    Matcher matcher = this.conditions[0].pattern.matcher(content.substring(offset));
-                    if (!matcher.find())
-                        break;
-                    
-                    String match = content.substring(matcher.start() +offset, matcher.end() +offset);
-                    if (this.conditions.length > 1) {
-                        boolean relevant = true;
-                        for (Condition condition : Arrays.copyOfRange(this.conditions, 1, this.conditions.length)) {
-                            Matcher submatcher = condition.pattern.matcher(match);
-                            boolean exists = submatcher.find();
-                            if ((condition instanceof Exclude && exists)
-                                    || (condition instanceof Include && !exists)) {
-                                relevant = false;
-                                break;
+                    for (int offset = 0; true; offset++) {
+                        
+                        content = new String(Review.readFile(file));
+                        if (offset >= content.length())
+                            break;
+                        
+                        Matcher matcher = this.conditions[0].pattern.matcher(content.substring(offset));
+                        if (!matcher.find())
+                            break;
+                        
+                        String match = content.substring(matcher.start() +offset, matcher.end() +offset);
+                        if (this.conditions.length > 1) {
+                            boolean relevant = true;
+                            for (Condition condition : Arrays.copyOfRange(this.conditions, 1, this.conditions.length)) {
+                                Matcher submatcher = condition.pattern.matcher(match);
+                                boolean exists = submatcher.find();
+                                if ((condition instanceof Exclude && exists)
+                                        || (condition instanceof Include && !exists)) {
+                                    relevant = false;
+                                    break;
+                                }
+                            }
+                            
+                            if (!relevant) {
+                                offset += matcher.start();
+                                continue;
                             }
                         }
-                        
-                        if (!relevant) {
-                            offset += matcher.start();
-                            continue;
-                        }
-                    }
 
-                    Review.founds++;
-                    
-                    output.printf("%n");
-                    output.printf("%s%n", file);
-                    output.printf("section #%s matches line %s, character %s%n", String.valueOf(this.number),
-                            String.valueOf(Task.locateMatchLine(matcher, content, offset)), String.valueOf(Task.locateMatchCharacter(matcher, content, offset)));
-                    String rule = this.conditions[0].rule;
-                    if (rule.length() > 72)
-                        rule = rule.substring(0, 69) + "...";
-                    output.printf("pattern %s%n", rule);
-                    String preview = Task.previewMatch(matcher, content, offset);
-                    output.println(preview == null ? "preview not available" : preview);
-                    
-                    if (this.action.startsWith("INFO:")) {
-                        output.println(this.action);
-                        offset += matcher.end();
-                    } else if (this.action.startsWith("TEST:")
-                            || !Options.replace) {
-                        match = match.replaceAll(this.conditions[0].rule, this.action);
-                        if (preview == null) {
-                            match = match.replaceAll("\\s", " ");
-                            if (match.length() > 74)
-                                match = match.substring(0, 71) + "...";
-                            output.println("TEST: " + match);
+                        Review.founds++;
+                        
+                        output.printf("%n");
+                        output.printf("%s%n", file);
+                        output.printf("section #%s matches line %s, character %s%n", String.valueOf(this.number),
+                                String.valueOf(Task.locateMatchLine(matcher, content, offset)), String.valueOf(Task.locateMatchCharacter(matcher, content, offset)));
+                        String rule = this.conditions[0].rule;
+                        if (rule.length() > 72)
+                            rule = rule.substring(0, 69) + "...";
+                        output.printf("pattern %s%n", rule);
+                        String preview = Task.previewMatch(matcher, content, offset);
+                        output.println(preview == null ? "preview not available" : preview);
+                        
+                        if (this.action.startsWith("INFO:")) {
+                            output.println(this.action);
+                            offset += matcher.end();
+                        } else if (this.action.startsWith("TEST:")
+                                || !Options.replace) {
+                            match = match.replaceAll(this.conditions[0].rule, this.action);
+                            if (preview == null) {
+                                match = match.replaceAll("\\s", " ");
+                                if (match.length() > 74)
+                                    match = match.substring(0, 71) + "...";
+                                output.println("TEST: " + match);
+                            } else {
+                                String[] lines = preview.split(LINE_BREAK);
+                                String test = lines[0].substring(0, (lines[1].split("\\|")[0]).length()) + match + content.substring(matcher.end() +offset);
+                                test = test.replaceAll("(?s)^\\s+", "");
+                                test = test.replaceAll("(?s)([^\r\n]*).*$", "$1");
+                                test = test.replaceAll("\\s", " ").trim();
+                                if (test.length() > 80)
+                                    test = test.substring(0, 77) + "...";
+                                output.println(test);
+                            }                       
+                            offset += matcher.end();
+                        } else if (this.action.startsWith("VOID:")) {
+                            content = content.substring(0, matcher.start() +offset) + content.substring(matcher.end() +offset);
+                            Review.writeFile(file, content.getBytes());
+                            Review.corrections++;
+                            output.println("CORRECTED");
                         } else {
-                            String[] lines = preview.split(LINE_BREAK);
-                            String test = lines[0].substring(0, (lines[1].split("\\|")[0]).length()) + match + content.substring(matcher.end() +offset);
-                            test = test.replaceAll("(?s)^\\s+", "");
-                            test = test.replaceAll("(?s)([^\r\n]*).*$", "$1");
-                            test = test.replaceAll("\\s", " ").trim();
-                            if (test.length() > 80)
-                                test = test.substring(0, 77) + "...";
-                            output.println(test);
-                        }                       
-                        offset += matcher.end();
-                    } else if (this.action.startsWith("VOID:")) {
-                        content = content.substring(0, matcher.start() +offset) + content.substring(matcher.end() +offset);
-                        Review.writeFile(file, content.getBytes());
-                        Review.corrections++;
-                        output.println("CORRECTED");
-                    } else {
-                        match = match.replaceAll(this.conditions[0].rule, this.action);
-                        content = content.substring(0, matcher.start() +offset) + match + content.substring(matcher.end() +offset);
-                        Review.writeFile(file, content.getBytes());
-                        Review.corrections++;
-                        output.println("CORRECTED");
-                        offset += matcher.start() +match.length();
+                            match = match.replaceAll(this.conditions[0].rule, this.action);
+                            content = content.substring(0, matcher.start() +offset) + match + content.substring(matcher.end() +offset);
+                            Review.writeFile(file, content.getBytes());
+                            Review.corrections++;
+                            output.println("CORRECTED");
+                            offset += matcher.start() +match.length() -1;
+                        }
+                        
+                        Review.print(stream.toString());
                     }
                     
-                    Review.print(stream.toString());
+                    if (compare.equals(content))
+                        break;
+                    compare = content;
                 }
-            } catch (Throwable throwable) {
+           } catch (Throwable throwable) {
                 Review.print("%nERROR: Occured in section #%s%n", String.valueOf(this.number));
                 Review.print(throwable);
                 Review.errors++;

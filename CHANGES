@@ -1,6 +1,10 @@
-1.5.0 2020xxxx
-  CR: Build: Uniform use of ./LICENSE and ./CHANGES
-  CR: Build: Update to use Java 11
+1.4.3 2020xxxx
+  BF: Correction of repeated/multiple searches and replacements in the same file
+      Every second finding was not replaced.
+      Patterns before with expansive expressions are also found by repeating.
+  CR: Update of the comment format
+  CR: Uniform use of ./LICENSE and ./CHANGES
+  CR: Update to use Java 11
 
 1.4.2 20180907
   BF: Correction when continuing the search
