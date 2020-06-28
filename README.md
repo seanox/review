@@ -13,46 +13,45 @@
 
 
 # Description
-Seanox Review, eine textbasierte Code-Analyse zur Prüfung und Korrektur stiller
-Standards.
+Seanox Review, a text-based code analysis for checking and correcting silent
+standards.
 
-Stille Standards sind projektspezifische sowie konzeptionelle Vorgaben und
-Standards sowie Richtlinien (Code of Conduct), die nicht durch die syntaktische
-und grammatikalische Prüfung eines Compilers abgedeckt werden und durch
-technische und fachliche Konzepte definiert werden.
+Silent standards are project-specific as well as conceptual regulations and
+standards and guidelines (code of conduct) that are not covered by the syntactic
+and grammatical check of a compiler and are defined by technical and
+professional concepts.
 
-Das Werkzeug basiert auf regulären Ausdrücken, Dateifiltern und kombiniert
-Muster und Ausschlüsse, was u.a. die Suche nach nicht existierenden,
-unvollständigen sowie nicht erfüllten Mustern ermöglicht.
+The tool is based on regular expressions, file filters and combines patterns and
+exclusions, which enables, among other things, the search for non-existent,
+un-complete as well as not-fulfilled patterns.
 
 
 ## Motivation
-In einem Projekt mit vielen Beteiligten gibt es eine Vielzahl von persönlichen
-und individuellen Vorlieben bei der Implementierung. Einige, wie z.B.
-Formatierung sind rein kosmetisch, andere wie z.B. die Fehlerbehandlung oder die
-Implementierung und Verwendung der verschiedenen Schichten einer Software sind
-projekt- und architekturrelevant. In komplexen Projekten mit zahlreichen
-Komponenten und Diensten fallen Verfehlungen und Irrwege oft erst sehr spät auf,
-da die Implementierung syntaktisch richtig, für eine Programmiersprache bekannte
-Anti-Pattern nicht gefunden werden und der Test der Implementierung erfolgreich
-durchlaufen wird.
+In a project with many participants, there are many personal and individual
+preferences during implementation. Some, such as formatting, are purely
+cosmetic, others, such as error handling or the implementation and use of the
+different layers of a software are relevant to the project and architecture. In
+complex projects with numerous components and services, mistakes and aberrations
+often only become apparent at a late stage because the implementation is
+syntactically correct, anti-patterns known for a programming language are not
+found and the implementation is successfully tested.
 
-Erst Änderung und Erweiterung der Architektur und Schnittstellen oder bei der
-späteren Fehleranalyse zeigen dann erst Verfehlungen und Irrwege auf.
+Only changes and extensions to the architecture and interfaces or later error
+analysis will reveal mistakes and aberrations.
 
-So sind Code- und Architektur-Reviews feste Bestandteile vom Qualitätsmanagement
-und laufen parallel zur Implementierung.
+Thus code and architecture reviews are fixed components of quality management
+and run parallel to implementation.
 
-Auffälligkeiten und Verfehlungen wiederholt zu finden, zu dokumentieren und wenn
-möglich zu korrigieren. Das sind die Erwartungen an Review.
+To repeatedly find, to document and, if possible, to correct conspicuousness and
+misconduct, these are the expectations of review.
 
 
 # Features
-- Werkzeug für die Kommandozeile
-- textbasiertes Suchen und Ersetzen mit regulären Ausdrücken mit Ein- und Ausschlüssen
-- Dateifiler mit Ein- und Ausschlüssen
-- einfache Definition der Reviews
-- parallele Ausführung der Reviews
+- Command line tool
+- text-based search and replace with regular expressions with inclusions and exclusions
+- File filter with inclusions and exclusions
+- simple definition of the reviews
+- parallel execution of the reviews
 
 
 # Licence Agreement
