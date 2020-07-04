@@ -281,18 +281,8 @@ public class Review {
             throws Exception {
 
         //for testing: 
-        options = new String[] {"-x", "-d", "../review-test/compare", "../review-test/anti-pattern.txt"};
-        //options = new String[] {"-d", "../review-test/compare", "../review-test/anti-pattern.txt"};
-        //options = new String[] {"-h"};
-        
-        //for testing: 
-        //options = new String[] {"-x", "-d", "./test", "./test/anti-pattern.txt"};
-        //options = new String[] {"-d", "./test", "./test/anti-pattern.txt"};
-        //options = new String[] {"-h"};
-
-        //for testing: 
-        //options = new String[] {"-x", "-d", "./", "./review/tools/review/anti-pattern.txt"};
-        //options = new String[] {"-d", "./", "./review/tools/review/anti-pattern.txt"};
+        //options = new String[] {"-x", "-d", "../test/compare", "../test/anti-pattern.txt"};
+        //options = new String[] {"-d", "../test/compare", "../test/anti-pattern.txt"};
         //options = new String[] {"-h"};
         
         File path = null;
@@ -322,7 +312,7 @@ public class Review {
         
         System.out.println("Review [Version #[ant:release-version] #[ant:release-date]]");
         System.out.println("Copyright (C) #[ant:release-year] Seanox Software Solutions");
-        System.out.println("Programming Languages Independent Code Review");
+        System.out.println("Expression Based Static Code Analysis");
         Review.timing = System.currentTimeMillis();
         
         try {

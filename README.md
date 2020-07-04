@@ -13,8 +13,8 @@
 
 
 # Description
-Seanox Review, a text-based code analysis for checking and correcting silent
-standards.
+Seanox Review, a text-based static code analysis for checking and correcting
+silent standards.
 
 Silent standards are project-specific as well as conceptual regulations and
 standards and guidelines (code of conduct) that are not covered by the syntactic
@@ -48,6 +48,7 @@ misconduct, these are the expectations of review.
 
 # Features
 - Command line tool
+- expression-based static code analysis
 - text-based search and replace with regular expressions with inclusions and exclusions
 - File filter with inclusions and exclusions
 - simple definition of the reviews
