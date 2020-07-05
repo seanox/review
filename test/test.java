@@ -56,7 +56,11 @@ public class Test {
     void invalid_Method() {
     }
     
+    boolean xxx = false;
+    
     void IvalidMethod() {
+        
+        boolean xxx = false;
         
         new Integer(1);
         new Long(1);
