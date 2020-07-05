@@ -122,6 +122,9 @@
     <echo file="${build.classes}/META-INF/MANIFEST.MF" append="true" message="Build-Version: ${release.version}${line.separator}"/>
     <echo file="${build.classes}/META-INF/MANIFEST.MF" append="true" message="Build-Date: ${release.date}${line.separator}"/>
     <echo file="${build.classes}/META-INF/MANIFEST.MF" append="true" message="Main-Class: Review${line.separator}"/>
+    <copy todir="${build.classes}/resources">
+      <fileset dir="${build.sources}/resources"/>
+    </copy>      
     <touch datetime="${release.date}" pattern="yyyyMMdd">
       <fileset dir="${build}"/>
     </touch>
