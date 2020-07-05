@@ -33,6 +33,10 @@
 #   All partial patterns must be true, only then is the action executed.
 # - patterns are separated by white spaces
 #   In a pattern, spaces must be encoded hexadecimal.
+#
+# AVOID LOOKBEHIND AT THE BEGINNING AND LOOKAHEAD AT THE END!
+# THE PATTERNS ARE FOUND, EXTRACTED TO REPLACE BUT DO NOT FIT, BECAUSE MATCH
+# STARTS AFTER LOOKBEHIND AND ENDS BEFORE LOOKAHEAD. 
 #   
 #     last line: action
 #     

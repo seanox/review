@@ -281,8 +281,8 @@ public class Review {
             throws Exception {
 
         //for testing: 
-        //options = new String[] {"-x", "-d", "../test/compare", "../test/anti-pattern.txt"};
-        //options = new String[] {"-d", "../test/compare", "../test/anti-pattern.txt"};
+        //options = new String[] {"-x", "-d", "./test", "./test/anti-pattern.txt"};
+        //options = new String[] {"-d", "./test", "./test/anti-pattern.txt"};
         //options = new String[] {"-h"};
         
         File path = null;
