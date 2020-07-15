@@ -134,8 +134,12 @@
 
     <mkdir dir="${build.project}"/>
     <move file="${build.project}.jar" todir="${build.project}"/>
-    <copy file="${workspace}/LICENSE" tofile="${build.project}/license.txt"/>
-    <copy file="${workspace.test}/anti-pattern.txt" todir="${build.project}"/>
+    <copy file="${workspace}/LICENSE" tofile="${build.project}/${ant.project.name}.license"/>
+    <copy file="${workspace.test}/java-code-pattern.txt" todir="${build.project}"/>
+    <copy file="${workspace.test}/java-encoding-pattern.txt" todir="${build.project}"/>
+    <copy file="${workspace.test}/java-formating-pattern.txt" todir="${build.project}"/>
+    <copy file="${workspace.test}/properties-encoding-pattern.txt" todir="${build.project}"/>
+    <copy file="${workspace.test}/properties-formating-pattern.txt" todir="${build.project}"/>
     <touch datetime="${release.date}" pattern="yyyyMMdd">
       <fileset dir="${build}"/>
     </touch>    

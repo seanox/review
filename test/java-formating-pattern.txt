@@ -1,0 +1,197 @@
+# Description
+#
+# The anti-pattern file is a text file that is read line by line.
+# A hash at the beginning of a line (blank characters are allowed before) marks
+# the line as a comment. Comments are not read and skipped. Means they are
+# processed as if the line does not exist.
+# Characters can be encoded hexadecimal.
+# 
+#     e.g. \x<HEX> (\x23 = #, \x20 = space) 
+# 
+# The anti-pattern are organized in sections.
+# A section begins after a blank line or if the line does not begin with a blank
+# character. Therefore, the subsequent lines of a section are indented.
+# If a line is to be continued exactly, the line must begin with blanks and
+# '...'. The line is then continued with the first character after '...'.
+#
+# The section of a anti-pattern has three and more lines.
+# 
+#     line 1: file filter
+# 
+# - space characters are separators
+# - every part of the filter must start with a directive
+# - backslash / slash are identical
+# - placeholders * and ? are supported
+# - delimiter + (include) and - (exclude)
+# 
+#     line 2 and more: primary pattern, optional partial patterns (subpatterns)
+#     
+# - primary pattern is the main pattern (always an include)
+#   The match found is then searched for Partial patterns.
+#   Partial patterns can be inclusions and exclusions. Inclusions must begin
+#   with + and - begin exclusions. The primary pattern has no directive.
+#   All partial patterns must be true, only then is the action executed.
+# - patterns are separated by white spaces
+#   In a pattern, spaces must be encoded hexadecimal.
+#
+# AVOID LOOKBEHIND AT THE BEGINNING AND LOOKAHEAD AT THE END!
+# THE PATTERNS ARE FOUND, EXTRACTED TO REPLACE BUT DO NOT FIT, BECAUSE MATCH
+# STARTS AFTER LOOKBEHIND AND ENDS BEFORE LOOKAHEAD. 
+#   
+#     last line: action
+#     
+# The action is primarily a regular replacement, corresponding to the search
+# pattern. When replacing, the groups and the backward references of the primary
+# pattern can be used. Secondary patterns cannot be used.
+# The action always starts with a command that can be followed by spaces and
+# then other arguments.
+# 
+#     The following additional actions are supported:
+#     
+#     TEST <replacment>
+# Displays a preview of the replacement without performing the replacement.    
+#     
+#     REMOVE
+#     PATCH
+# Deletes the match.
+# No further arguments are expected.
+# 
+#     PRINT <message>
+# Displays a information about a location without performing a replacement.
+# 
+#     PATCH <replacement>
+# Performs the replacement if the replacement is allowed as a program argument.
+# Otherwise, the command behaves like TEST.
+
+
+
+# No unnecessary blank lines at the end of comment blocks  
+- */.svn/* - */.git/* + *.java    
+    (\*\s+)+\*/
+    PATCH */
+
+# Use one space after the keywords: if|while|for|do|switch|synchronized     
+- */.svn/* - */.git/* + *.java
+    (\s+(?:if|while|for|do|switch|synchronized))\s{2,}(\()
+    PATCH $1 $2
+
+# Use one space after the keywords: if|while|for|do|switch|synchronized     
+- */.svn/* - */.git/* + *.java
+    (\s+(?:if|while|for|do|switch|synchronized))(\()
+    PATCH $1 $2
+
+# Use one space between round and curly brackets excluding RegExp   
+- */.svn/* - */.git/* + *.java
+    (\))(\{)(?![\d,])
+    PATCH $1 $2
+
+# Use one space between round and curly brackets excluding RegExp   
+- */.svn/* - */.git/* + *.java
+    (\))\s{2,}(\{)(?![\d,])
+    PATCH $1 $2
+
+# No spaces after round and curly brackets
+- */.svn/* - */.git/* + *.java
+    ([\(\{])\x20+([^\s])
+    PATCH $1$2
+
+# No spaces after round and curly brackets
+- */.svn/* - */.git/* + *.java
+    ([^\s\*\"\/])\x20+([\)\}])
+    PATCH $1$2
+
+# No spaces after the keyword function
+- */.svn/* - */.git/* + *.java
+    (\bfunction)\s+(\()
+    PATCH $1$2
+    
+# No unnecessary spaces before the end of block comments
+- */.svn/* - */.git/* + *.java
+    (\S\x20)\x20+(\*/)
+    PATCH $1$2
+    
+# No unnecessary spaces after the beginning of block comments
+- */.svn/* - */.git/* + *.java
+    (\/\*\*)\x20+(\x20\S)
+    PATCH $1$2
+
+# No unnecessary blank lines between curly brackets
+- */.svn/* - */.git/* + *.java
+    (?s)(\{)(?:\x20*[\r\n]+){3,}(\x20*\})
+    PATCH $1\x0D\x0A$2
+
+# No line breaks between curly brackets and the keyword else 
+- */.svn/* - */.git/* + *.java
+    (\})\s*[\r\n]+\s*(else\b)
+    PATCH $1 $2
+
+# No line breaks between the keyword else and braces
+- */.svn/* - */.git/* + *.java
+    (\belse\b)\s*[\r\n]+\s*(\{)
+    PATCH $1 $2
+
+# Syntax for varArg: varArg...
+- */.svn/* - */.git/* + *.java
+    (?i)([\(,]\s*\w+)\s+\.{3}\s*([a-z])
+    PATCH $1...\x20$2
+
+# try-catch: no breaks before catch
+- */.svn/* - */.git/* + *.java   
+    (?s)(?<=\})\s*[\r\n]+\s*(?=catch)
+    PATCH \x20
+
+# Not more than one space after separator and following text
+- */.svn/* - */.git/* + *.java   
+    ([\,\;\(\)\[\]\=])\x20{2,}([^\s\|]+)
+    PATCH $1 $2
+
+# No multiple spaces, max. one blank line as separation
+- */.svn/* - */.git/* + *.java   
+    ((\x20*(\r\n)){2})(\x20*(\r\n))+
+    PATCH $1
+
+# Block comments are simply closed
+- */.svn/* - */.git/* + *.java
+    (\*)+(\*/)
+    PATCH $2
+
+# Block comments without blank lines at the beginning
+- */.svn/* - */.git/* + *.java   
+    (?s)(/\*\*)(\s*[\r\n]+\s*\*\s*(?=[\r\n]))+
+    PATCH $1
+
+# JavaDoc syntax: @param name text (without - between name and text)
+- */.svn/* - */.git/* + *.java
+    (@param\s+(?:[^\s]+)\s*)-(\s*)
+    PATCH $1\x20$2 
+
+# Uniform usage of static final
+- */.svn/* - */.git/* + *.java
+    (\w)\s+final\s+static\s+(\w)
+    PATCH $1 static final $2
+
+# Arrow functions are separated by a space
+- */.svn/* - */.git/* + *.java    
+    (?m)(.*?[\w\)])(->)
+    PATCH $1 $2  
+
+# Block comments with several lines starts with /** and the text starts in the following line
+- */.svn/* - */.git/* + *.java
+    (\R)(\x20*)(/\*\*)([^\r\n]*\w[^\r\n]*\R\x20*\*\x20*\w)
+    PATCH $1$2$3$2 *$4
+
+# Block comments with several lines ends with */ in the next line after the last line of text
+- */.svn/* - */.git/* + *.java
+    (\R\x20*)(\*[^\r\n]+)(\*/)
+    PATCH $1$2$1$3
+
+# No variable assignment if the variable in the following line is used directly for the return
+- */.svn/* - */.git/* + *.java    
+    (\R\s+)\w[\w\.<>\(\)\[\]]+\s+(\w+)\s+=([^\r\n]+)\R\s*return\s*\2; -(\R\s+)else\b
+    PATCH $1return$3
+
+# Block comments with only one line can be written as one line.
+# This minimizes the number of lines of code, because unnecessary line breaks are eliminated
+- */.svn/* - */.git/* + *.java    
+    (/\*\*)\s*\R+\s*\*\s*([^\r\n]+)\s*\R+\s*(\*/)
+    PATCH $1 $2 $3
