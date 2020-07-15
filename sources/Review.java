@@ -40,12 +40,12 @@ import java.util.regex.PatternSyntaxException;
 /**
  * Review, a text based code analyzer.<br>
  * <br>
- * Review 1.4.3 20200618<br>
+ * Review 1.5.0 20200715<br>
  * Copyright (C) 2020 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 1.4.3 20200618
+ * @version 1.5.0 20200715
  */
 public class Review {
     
@@ -555,6 +555,9 @@ public class Review {
         /** file filter */
         private FileFilter filter;
 
+        /** command */
+        private String command;
+
         /** action */
         private String action;
 
@@ -719,7 +722,11 @@ public class Review {
             } catch (UnsupportedEncodingException exception) {
                 throw new ReviewParserException("Invalid encoded action found");
             }
-            
+            String pattern = "(?i)^(TEST|PRINT|PATCH|REMOVE)(?:\\s+(.*)\\s*)*$";
+            if (!task.action.matches(pattern))
+                throw new ReviewParserException("Invalid task action found");
+            task.command = task.action.replaceAll(pattern, "$1").toUpperCase();
+            task.action = task.action.replaceAll(pattern, "$2");
             return task;            
         }
         
@@ -892,19 +899,24 @@ public class Review {
                             rule = rule.substring(0, 69) + "...";
                         output.printf("pattern %s%n", rule);
                         String preview = Task.previewMatch(matcher, content, offset);
-                        output.println(preview == null ? "preview not available" : preview);
+                        output.println(preview == null ? "Preview not available" : preview);
                         
-                        if (this.action.startsWith("INFO:")) {
-                            output.println(this.action);
-                            offset += matcher.end();
-                        } else if (this.action.startsWith("TEST:")
-                                || !Options.replace) {
+                        if (this.command.matches("^REMOVE$")
+                                || (this.command.matches("^PATCH$")
+                                        && this.action.isBlank())) {
+                            content = content.substring(0, matcher.start() +offset) + content.substring(matcher.end() +offset);
+                            Review.writeFile(file, content.getBytes());
+                            Review.corrections++;
+                            output.println("CORRECTED");
+                        } else if (this.command.matches("^TEST$")
+                                || (this.command.matches("^PATCH$")
+                                        && !Options.replace)) {
                             match = match.replaceAll(this.conditions[0].rule, this.action);
                             if (preview == null) {
                                 match = match.replaceAll("\\s", " ");
                                 if (match.length() > 74)
                                     match = match.substring(0, 71) + "...";
-                                output.println("TEST: " + match);
+                                output.println("TEST " + match);
                             } else {
                                 String[] lines = preview.split(LINE_BREAK);
                                 String test = lines[0].substring(0, (lines[1].split("\\|")[0]).length()) + match + content.substring(matcher.end() +offset);
@@ -916,12 +928,10 @@ public class Review {
                                 output.println(test);
                             }                       
                             offset += matcher.end();
-                        } else if (this.action.startsWith("VOID:")) {
-                            content = content.substring(0, matcher.start() +offset) + content.substring(matcher.end() +offset);
-                            Review.writeFile(file, content.getBytes());
-                            Review.corrections++;
-                            output.println("CORRECTED");
-                        } else {
+                        } else if (this.command.matches("^PRINT$")) {
+                            output.println(!this.action.isBlank() ? this.action : "Output not available");
+                            offset += matcher.end();
+                        } else if (this.command.matches("^PATCH$")) {
                             match = match.replaceAll(this.conditions[0].rule, this.action);
                             content = content.substring(0, matcher.start() +offset) + match + content.substring(matcher.end() +offset);
                             Review.writeFile(file, content.getBytes());
@@ -931,9 +941,12 @@ public class Review {
                         }
                         
                         Review.print(stream.toString());
+                        stream.reset();
                     }
                     
-                    if (compare.equals(content))
+                    if (compare.equals(content)
+                            || !this.command.matches("^PATCH$")
+                            || !Options.replace) 
                         break;
                     compare = content;
                 }

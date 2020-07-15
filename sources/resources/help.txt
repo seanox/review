@@ -37,15 +37,23 @@ The section of a anti-pattern has three and more lines.
     
 The action is primarily a regular replacement, corresponding to the search
 pattern. When replacing, the groups and the backward references of the primary
-pattern can be used. Partial patterns cannot be used.
+pattern can be used. Secondary patterns cannot be used.
+The action always starts with a command that can be followed by spaces and then
+other arguments.
 
     The following additional actions are supported:
     
-    TEST: <replacment>
+    TEST <replacment>
 Displays a preview of the replacement without performing the replacement.    
     
-    VOID:
+    REMOVE
+    PATCH
 Deletes the match.
+No further arguments are expected.
 
-    INFO: <message>
+    PRINT <message>
 Displays a information about a location without performing a replacement.
+
+    PATCH <replacement>
+Performs the replacement if the replacement is allowed as a program argument.
+Otherwise, the command behaves like TEST.

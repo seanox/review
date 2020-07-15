@@ -86,11 +86,13 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
 # Changes (Change Log)
-## 1.4.3 2020xxxx (summary of the next version)  
+## 1.5.0 2020xxxx (summary of the next version)  
 BF: Correction of repeated/multiple searches and replacements in the same file  
+BF: Correction of repeated outputs of the same tasks/findings during analysis  
 CR: Update of the comment format  
 CR: Uniform use of ./LICENSE and ./CHANGES  
 CR: Update to use Java 11  
+CR: Update of commands: TEST|PRINT|PATCH|REMOVE  
 
 [Read more](https://raw.githubusercontent.com/seanox/review/master/CHANGES)
 

@@ -4,4 +4,4 @@ usage: java -jar review.jar <options> <pattern>
 	-d directory (default work directory)
 	-x perform replacement
 
-	pattern, file with (anti)pattern
+	pattern, file(s) with (anti)pattern
