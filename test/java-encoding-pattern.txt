@@ -24,7 +24,7 @@
 # - placeholders * and ? are supported
 # - delimiter + (include) and - (exclude)
 # 
-#     line 2 and more: primary pattern, optional partial patterns (subpatterns)
+#     line 2 and more: primary pattern, optional partial patterns (sub-pattern)
 #     
 # - primary pattern is the main pattern (always an include)
 #   The match found is then searched for Partial patterns.
@@ -65,17 +65,17 @@
 
 
 
-# for TAB 4 spaces are used 
+# For TAB 4 spaces are used 
 - */.svn/* - */.git/* + *.java
     \x09
     PATCH \x20\x20\x20\x20
 
-# only space x20 is used as space character
+# Only space x20 is used as space character
 - */.svn/* - */.git/* + *.java
     [\x00-\x09\x0B\x0C\x0E-\x1F\xA0]
     PATCH \x20
 
-# only 7-bit characters (x0D x0A x20-x7F) are used
+# Only ASCII (7-bit characters 0D/0A/20-7F) are used
 - */.svn/* - */.git/* + *.java
-    ([\x80-\xFF])
+    [^\x0D\x0A\x20-\x7F]
     PRINT Check and add a rule

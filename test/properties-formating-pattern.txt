@@ -24,7 +24,7 @@
 # - placeholders * and ? are supported
 # - delimiter + (include) and - (exclude)
 # 
-#     line 2 and more: primary pattern, optional partial patterns (subpatterns)
+#     line 2 and more: primary pattern, optional partial patterns (sub-pattern)
 #     
 # - primary pattern is the main pattern (always an include)
 #   The match found is then searched for Partial patterns.
