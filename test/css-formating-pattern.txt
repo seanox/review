@@ -1,0 +1,76 @@
+# Description
+#
+# The anti-pattern file is a text file that is read line by line.
+# A hash at the beginning of a line (blank characters are allowed before) marks
+# the line as a comment. Comments are not read and skipped. Means they are
+# processed as if the line does not exist.
+# Characters can be encoded hexadecimal.
+# 
+#     e.g. \x<HEX> (\x23 = #, \x20 = space) 
+# 
+# The anti-pattern are organized in sections.
+# A section begins after a blank line or if the line does not begin with a blank
+# character. Therefore, the subsequent lines of a section are indented.
+# If a line is to be continued exactly, the line must begin with blanks and
+# '...'. The line is then continued with the first character after '...'.
+#
+# The section of a anti-pattern has three and more lines.
+# 
+#     line 1: file filter
+# 
+# - space characters are separators
+# - every part of the filter must start with a directive
+# - backslash / slash are identical
+# - placeholders * and ? are supported
+# - delimiter + (include) and - (exclude)
+# 
+#     line 2 and more: primary pattern, optional partial patterns (sub-pattern)
+#     
+# - primary pattern is the main pattern (always an include)
+#   The match found is then searched for Partial patterns.
+#   Partial patterns can be inclusions and exclusions. Inclusions must begin
+#   with + and - begin exclusions. The primary pattern has no directive.
+#   All partial patterns must be true, only then is the action executed.
+# - patterns are separated by white spaces
+#   In a pattern, spaces must be encoded hexadecimal.
+#
+# AVOID LOOKBEHIND AT THE BEGINNING AND LOOKAHEAD AT THE END!
+# THE PATTERNS ARE FOUND, EXTRACTED TO REPLACE BUT DO NOT FIT, BECAUSE MATCH
+# STARTS AFTER LOOKBEHIND AND ENDS BEFORE LOOKAHEAD. 
+#   
+#     last line: action
+#     
+# The action is primarily a regular replacement, corresponding to the search
+# pattern. When replacing, the groups and the backward references of the primary
+# pattern can be used. Secondary patterns cannot be used.
+# The action always starts with a command that can be followed by spaces and
+# then other arguments.
+# 
+#     The following additional actions are supported:
+#     
+#     TEST <replacment>
+# Displays a preview of the replacement without performing the replacement.    
+#     
+#     REMOVE
+#     PATCH
+# Deletes the match.
+# No further arguments are expected.
+# 
+#     PRINT <message>
+# Displays a information about a location without performing a replacement.
+# 
+#     PATCH <replacement>
+# Performs the replacement if the replacement is allowed as a program argument.
+# Otherwise, the command behaves like TEST.
+
+
+
+# For TAB 2 spaces are used 
+- */.svn/* - */.git/* + *.css
+    \x09
+    PATCH \x20\x20\x20\x20
+    
+# Line by line, key and value are separated by colon and a space
+- */.svn/* - */.git/* + *.css
+    ((?s)^\s+[\w\-]+:)\s*
+    $1\x20
