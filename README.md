@@ -84,8 +84,8 @@ specific language governing permissions and limitations under the License.
 [Seanox Review Sources 1.4.2](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.2-src.zip) 
 
 
-# Changes (Change Log)
-## 1.5.0 2020xxxx (summary of the next version)  
+# Changes
+## 1.5.0 2020xxxx (upcoming version)  
 BF: Correction of repeated/multiple searches and replacements in the same file  
 BF: Correction of repeated outputs of the same tasks/findings during analysis  
 CR: Update of the comment format  
@@ -101,20 +101,3 @@ CR: License: Changed to Apache License Version 2.0
 [Issues](https://github.com/seanox/review/issues)  
 [Requests](https://github.com/seanox/review/pulls)  
 [Mail](http://seanox.de/contact)
-
-
-# Thanks!
-<img src="https://raw.githubusercontent.com/seanox/seanox/master/sources/resources/images/thanks.png">
-
-[cantaa GmbH](https://cantaa.de/)  
-[JetBrains](https://www.jetbrains.com/?from=seanox)  
-Sven Lorenz  
-Andreas Mitterhofer  
-[novaObjects GmbH](https://www.novaobjects.de)  
-Leo Pelillo  
-Gunter Pfannm&uuml;ller  
-Annette und Steffen Pokel  
-Edgar R&ouml;stle  
-Michael S&auml;mann  
-Markus Schlosneck  
-[T-Systems International GmbH](https://www.t-systems.com)
