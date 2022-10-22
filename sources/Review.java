@@ -37,11 +37,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * Review, a text based code analyzer.<br>
- * <br>
- * Review 1.5.0 202112115<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * Alle Rechte vorbehalten.
+ * Review, a text based code analyzer.
  *
  * @author  Seanox Software Solutions
  * @version 1.5.0 20211211
