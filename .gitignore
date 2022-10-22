@@ -1,7 +1,7 @@
-/classes/
-/build/
-/release/
 /.idea/
+/build/
+/classes/
+/release/
 /.classpath
 /.settings
 /.project
