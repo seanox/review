@@ -11,6 +11,7 @@
   CR: License: Changed to Apache License Version 2.0
   CR: Build: Releases are now only available on the release page
   CR: Optimization of syntax for continuing lines
+      The sequence ... at the beginning of the line is no longer required.
 
 1.4.2 20180907
   BF: Correction when continuing the search
