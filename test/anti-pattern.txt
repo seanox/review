@@ -51,8 +51,7 @@
 #     TEST <replacment>
 # Displays a preview of the replacement without performing the replacement.    
 #     
-#     REMOVE
-#     PATCH
+#     REMOVE / PATCH
 # Deletes the match.
 # No further arguments are expected.
 # 
@@ -68,77 +67,77 @@
 
 # finds capitalized variables
 # include all *.java files, ignore all .svn directories
-#+ *.java
-#    private\s+[A-Za-z]+\s[A-Z][\w]+;
-#    PRINT check it, uncapitalize
+# + *.java
+# private\s+[A-Za-z]+\s[A-Z][\w]+;
+# PRINT check it, uncapitalize
 
 # finds constants without final
 # include all *.java files, ignore all .svn directories
-#+ *.java
-#    \x20+(\x20+[a-z]+){1,}\x20+[A-Z]{2,} -\sfinal\s
-#    PRINT check it, use 'final' for constants
+# + *.java
+# \x20+(\x20+[a-z]+){1,}\x20+[A-Z]{2,} -\sfinal\s
+# PRINT check it, use 'final' for constants
 
 # finds constants without static
 # include all *.java files, ignore all .svn directories
-#+ *.java
-#    \x20+(\x20+[a-z]+){1,}\x20+[A-Z]{2,} -\sstatic\s
-#    PRINT check it, use 'static' for constants
+# + *.java
+# \x20+(\x20+[a-z]+){1,}\x20+[A-Z]{2,} -\sstatic\s
+# PRINT check it, use 'static' for constants
 
 # finds class|interface|enun with invalid name
 # include all *.java files, ignore all .svn directories
-#+ *.java
-#    \s(class|interface|enun)\s+[A-Z]*[a-zA-Z0-9]*[A-Z]{2}
-#    PRINT check it, use camel case for class/interface/enum
+# + *.java
+# \s(class|interface|enun)\s+[A-Z]*[a-zA-Z0-9]*[A-Z]{2}
+# PRINT check it, use camel case for class/interface/enum
 
 # finds class|interface|enun with invalid name
 # include all *.java files, ignore all .svn directories
-#+ *.java
-#    \s(class|interface|enun)\s+(?i)[a-z0-9]*[^a-z0-9\s]
-#    PRINT check it, use only chars a-z, 0-9 for class/interface/enum
+# + *.java
+# \s(class|interface|enun)\s+(?i)[a-z0-9]*[^a-z0-9\s]
+# PRINT check it, use only chars a-z, 0-9 for class/interface/enum
 
 # finds all new Boolean(true) and replace in Boolean.TRUE 
 # include all *.java files, ignore all .svn directories
-#+ *.java    
-#    new\s+Boolean\(\s*true\s*\)
-#    PATCH Boolean.TRUE
+# + *.java
+# new\s+Boolean\(\s*true\s*\)
+# PATCH Boolean.TRUE
 
 # finds all new Boolean(false) and replace in Boolean.FALSE
 # include all *.java files, ignore all .svn directories
-#+ *.java    
-#    new\s+Boolean\s*\(\s*false\s*\)
-#    PATCH Boolean.FALSE
+# + *.java
+# new\s+Boolean\s*\(\s*false\s*\)
+# PATCH Boolean.FALSE
   
 # finds all the places where 'valueOf' can be used and correct it  
 # include all *.java files, ignore all .svn directories
-#+ *.java    
-#    new\s+(Boolean|Byte|Character|Double|Float|Integer|Long|Short)\s*\(
-#    PATCH $1.valueOf(    
+# + *.java
+# new\s+(Boolean|Byte|Character|Double|Float|Integer|Long|Short)\s*\(
+# PATCH $1.valueOf(
 
 
 # examples for html ============================================================
 
 # finds a-tag where the title-attribute ist empty or missing 
 # include all *.html files, ignore all .svn directories
-#+ *.html
-#  (?i)<\s*a[^>]+> -(?i)\btitle="[^"]+"
-#  PRINT check it, a-tag with invalid title-attribute
+# + *.html
+# (?i)<\s*a[^>]+> -(?i)\btitle="[^"]+"
+# PRINT check it, a-tag with invalid title-attribute
 
 # finds a-tag where the href-attribute ist empty or missing
 # include all *.html files, ignore all .svn directories
-#+ *.html
-#  (?i)<\s*a[^>]+> -(?i)\bhref="[^"]+"
-#  PRINT check it, a-tag with invalid href-attribute
+# + *.html
+# (?i)<\s*a[^>]+> -(?i)\bhref="[^"]+"
+# PRINT check it, a-tag with invalid href-attribute
 
 # finds input-tags without label-tag
 # include all *.html files, ignore all .svn directories
-#+ *.html
-#   <\s*[^/].*?\s*<input -<\s*label
-#  PRINT check it, use input alway with a label
+# + *.html
+# <\s*[^/].*?\s*<input -<\s*label
+# PRINT check it, use input alway with a label
 
 
 # examples for properties ======================================================
 
 # only 7-bit characters (x0D x0A x20-x7F xA7) are used
 + *.properties
-    ([\x80-\xFF])
-    PRINT Check and add a rule
+([\x80-\xFF])
+PRINT Check and add a rule
