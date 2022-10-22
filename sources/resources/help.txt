@@ -46,8 +46,7 @@ other arguments.
     TEST <replacment>
 Displays a preview of the replacement without performing the replacement.    
     
-    REMOVE
-    PATCH
+    REMOVE / PATCH
 Deletes the match.
 No further arguments are expected.
 
