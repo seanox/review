@@ -4,7 +4,7 @@
  * Diese Software unterliegt der Version 2 der Apache License.
  *
  * Review, text based code analyzer
- * Copyright (C) 2021 Seanox Software Solutions
+ * Copyright (C) 2022 Seanox Software Solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -40,7 +40,7 @@ import java.util.regex.PatternSyntaxException;
  * Review, a text based code analyzer.
  *
  * @author  Seanox Software Solutions
- * @version 1.5.0 20211211
+ * @version 1.5.0 20221022
  */
 public class Review {
     
@@ -92,7 +92,6 @@ public class Review {
      * @param message message
      */
     private static void print(Object message) {
-        
         if (message instanceof Throwable) {
             StringWriter writer = new StringWriter();
             ((Throwable)message).printStackTrace(new PrintWriter(writer));
@@ -121,7 +120,6 @@ public class Review {
      */
     private static byte[] readFile(File file)
             throws IOException {
-        
         byte[] bytes = Files.readAllBytes(file.toPath());
         Review.files++;
         Review.volume += bytes.length;
@@ -137,7 +135,6 @@ public class Review {
      */
     private static void writeFile(File file, byte[] bytes)
             throws IOException {
-        
         Files.write(file.toPath(), bytes);
         Review.volume += bytes.length;
     }
@@ -154,7 +151,7 @@ public class Review {
     private static Task[] readTasks(File file)
             throws IOException, ReviewParserException {
 
-        String content = new String();
+        String content = "";
         int index = 0;
         for (String line : new String(Review.readFile(file)).split(LINE_BREAK)) {
             index++;
@@ -183,7 +180,6 @@ public class Review {
      * @return the established worker, otherwise {@code null}
      */
     private static Worker lockWorker(File file) {
-        
         for (Worker worker : Review.workers)
             if (worker.lock(file))
                 return worker;
@@ -195,7 +191,6 @@ public class Review {
      * @return {@code true} when active worker found
      */
     private static boolean activeWorker() {
-        
         for (Worker worker : Review.workers)
             if (worker.file != null)
                 return true;
@@ -257,12 +252,10 @@ public class Review {
      */
     private static String getResourceText(String resource)
             throws IOException {
-        
         String text = new String(Review.getResourceBytes(resource));
         text = text.replaceAll("\\x20{4}", "\t");
         text = text.replaceAll("(?m)\\s+$", System.getProperty("line.separator"));
         text = text.replaceAll("\\s+$", "");
-        
         return text;
     }
     
@@ -304,8 +297,8 @@ public class Review {
             return;
         }
         
-        System.out.println("Review [Version #[ant:release-version] #[ant:release-date]]");
-        System.out.println("Copyright (C) #[ant:release-year] Seanox Software Solutions");
+        System.out.println("Review [Version 0.0.0 00000000]");
+        System.out.println("Copyright (C) 0000 Seanox Software Solutions");
         System.out.println("Expression Based Static Code Analysis");
         Review.timing = System.currentTimeMillis();
         
@@ -405,7 +398,6 @@ public class Review {
          * @return {@code true}, if the worker could be established
          */
         private boolean lock(File file) {
-
             if (this.file != null)
                 return false;
             this.file = file;
@@ -555,7 +547,6 @@ public class Review {
 
         /** Constructor, creates a new Task object. */
         private Task() {
-            return;
         }
         
         /**
@@ -567,12 +558,10 @@ public class Review {
          */
         private static String decode(String text)
                 throws UnsupportedEncodingException {
-            
             text = text.replaceAll("\\s", "\\\\x20");
             text = text.replaceAll("\\%", "\\\\x25");
             text = text.replaceAll("\\+", "\\\\x2B");
             text = text.replaceAll("(?i)\\\\x([0-9a-f]{2})", "%$1");
-            
             return URLDecoder.decode(text, "ISO-8859-1");
         }
         
@@ -631,7 +620,7 @@ public class Review {
                 else if (rule.startsWith("-"))
                     conditions.add(new Exclude(Condition.Type.CONTENT, Task.decode(rule.substring(1))));
                 else throw new ReviewParserException("Invalid file condition found");
-                // the first condition must be an include
+                // the first condition must be a include
                 if (conditions.size() == 1
                         && conditions.get(0) instanceof Exclude)
                     throw new ReviewParserException("Invalid pattern found");
@@ -650,29 +639,25 @@ public class Review {
             String expression;
             
             expression = String.join("|", Arrays.stream(conditions).filter(
-                    c -> Condition.Type.FILE.equals(c.type)
-                            && c instanceof Include).map(c -> c.rule).toArray(String[]::new)).trim();
+                    condition -> Condition.Type.FILE.equals(condition.type)
+                            && condition instanceof Include).map(condition -> condition.rule).toArray(String[]::new)).trim();
             final Pattern include = !expression.isEmpty() ? Pattern.compile("(?i)^" + expression + "$") : null;
             
             expression = String.join("|", Arrays.stream(conditions).filter(
-                    c -> Condition.Type.FILE.equals(c.type)
-                            && c instanceof Exclude).map(c -> c.rule).toArray(String[]::new)).trim();
+                    condition -> Condition.Type.FILE.equals(condition.type)
+                            && condition instanceof Exclude).map(condition -> condition.rule).toArray(String[]::new)).trim();
             final Pattern exclude = !expression.isEmpty() ? Pattern.compile("(?i)^" + expression + "$") : null;
 
-            return new FileFilter() {
-
-                public boolean accept(File file) {
-
-                    String name;
-                    try {name = file.getCanonicalPath().replaceAll("\\\\", "/");
-                    } catch (IOException exception) {
-                        return false;
-                    }
-                    return (include == null
-                                || include.matcher(name).matches())
-                            && (exclude == null
-                                    || !exclude.matcher(name).matches());
+            return file -> {
+                String name;
+                try {name = file.getCanonicalPath().replaceAll("\\\\", "/");
+                } catch (IOException exception) {
+                    return false;
                 }
+                return (include == null
+                            || include.matcher(name).matches())
+                        && (exclude == null
+                                || !exclude.matcher(name).matches());
             };
         }
         
@@ -691,8 +676,8 @@ public class Review {
             if (lines.length < 4)
                 throw new ReviewParserException("Invalid task structure found");
             
-            List<Condition> conditions = new ArrayList<>();
-            try {conditions.addAll(Arrays.asList(Task.parseFileConditions(lines[1])));
+            List<Condition> conditions;
+            try {conditions = new ArrayList<>(Arrays.asList(Task.parseFileConditions(lines[1])));
             } catch (UnsupportedEncodingException exception) {
                 throw new ReviewParserException("Invalid encoded filter found");
             }
@@ -707,7 +692,7 @@ public class Review {
             task.number = Long.valueOf(lines[0].replaceAll("^#(\\d+)$", "$1"));
             task.conditions = conditions.toArray(new Condition[0]);
             task.filter = Task.createFileFilter(task.conditions);
-            task.conditions = Arrays.stream(task.conditions).filter(c -> Condition.Type.CONTENT.equals(c.type)).toArray(Condition[]::new);
+            task.conditions = Arrays.stream(task.conditions).filter(condition -> Condition.Type.CONTENT.equals(condition.type)).toArray(Condition[]::new);
             if (task.conditions.length <= 0)
                 throw new ReviewParserException("Invalid task structure found");
             try {task.action = Task.decode(lines[lines.length -1]);
@@ -767,11 +752,11 @@ public class Review {
             
             if (preview.length() > 40
                     && match.length() > 40) {
-                preview = "..." + preview.substring(Math.max(0, preview.length() -40 -3), preview.length());
+                preview = "..." + preview.substring(Math.max(0, preview.length() -40 -3));
                 match = match.substring(0, Math.min(match.length(), 40 -3)) + "...";
             } else if (preview.length() + match.length() > 80) {
                 if (preview.length() > 40) {
-                    preview = "..." + preview.substring(preview.length() -(80 -3 -match.length()), preview.length());
+                    preview = "..." + preview.substring(preview.length() -(80 -3 -match.length()));
                 } else if (match.length() > 40) {
                     match = match.substring(0, 80 -3 -preview.length()) + "...";
                 }
@@ -794,7 +779,6 @@ public class Review {
          * @return the line of the first character of the match
          */        
         private static int locateMatchLine(Matcher matcher, String content, int offset) {
-            
             char digit = content.charAt(matcher.start() +offset);
             if (digit == '\r'
                     || digit == '\n')
@@ -815,7 +799,6 @@ public class Review {
          * @return the line position of the first character of the match
          */
         private static int locateMatchCharacter(Matcher matcher, String content, int offset) {
-            
             char digit = content.charAt(matcher.start() +offset);
             if (digit == '\r'
                     || digit == '\n')
