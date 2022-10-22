@@ -1,4 +1,4 @@
-1.5.0 2020xxxx
+1.5.0 2022xxxx
   BF: Correction of repeated/multiple searches and replacements in the same file
       Every second finding was not replaced.
       Patterns before with expansive expressions are also found by repeating.
@@ -9,6 +9,8 @@
   CR: Update of commands: TEST|PRINT|PATCH|REMOVE
       - use: TEST for TEST: / PRINT for INFO: / PATCH for each replacement / REMOVE for VOID:
   CR: License: Changed to Apache License Version 2.0
+  CR: Build: Releases are now only available on the release page
+  CR: Optimization of syntax for continuing lines
 
 1.4.2 20180907
   BF: Correction when continuing the search
@@ -60,7 +62,7 @@
 
 1.2.0 20150628
   CR: Erweiterung um Ausschluesse bei Inhalten und Dateifiltern
-  CR: Optimierung mit derr Umstellung von Thread auf Worker
+  CR: Optimierung mit der Umstellung von Thread auf Worker
   CR: Optimierung der nebenlaeufigen Verarbeitung
   CR: Optimierung in der Mustererkennung
 
