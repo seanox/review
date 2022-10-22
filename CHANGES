@@ -3,6 +3,7 @@
       Every second finding was not replaced.
       Patterns before with expansive expressions are also found by repeating.
   BF: Correction of repeated outputs of the same tasks/findings during analysis
+  BF: Build: Optimization of the release info process
   CR: Update of the comment format
   CR: Uniform use of ./LICENSE and ./CHANGES
   CR: Update to use Java 11
