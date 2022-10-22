@@ -11,8 +11,6 @@
 # The anti-pattern are organized in sections.
 # A section begins after a blank line or if the line does not begin with a blank
 # character. Therefore, the subsequent lines of a section are indented.
-# If a line is to be continued exactly, the line must begin with blanks and
-# '...'. The line is then continued with the first character after '...'.
 #
 # The section of a anti-pattern has three and more lines.
 # 
@@ -51,8 +49,7 @@
 #     TEST <replacment>
 # Displays a preview of the replacement without performing the replacement.    
 #     
-#     REMOVE
-#     PATCH
+#     REMOVE / PATCH
 # Deletes the match.
 # No further arguments are expected.
 # 
@@ -67,36 +64,36 @@
 
 # Use strings like an object and enclose them with round brackets
 - */.svn/* - */.git/* + *.java    
-    ("[^"\r\n,\+]*")\s*(\.[a-zA-Z])
-    PATCH ($1)$2
+("[^"\r\n,\+]*")\s*(\.[a-zA-Z])
+PATCH ($1)$2
 
 # Use Boolean.TRUE for new Boolean(...)
 - */.svn/* - */.git/* + *.java    
-    new\s+Boolean\(\s*true\s*\)
-    PATCH Boolean.TRUE
+new\s+Boolean\(\s*true\s*\)
+PATCH Boolean.TRUE
     
 # Use Boolean.FALSE for new Boolean(...)
 - */.svn/* - */.git/* + *.java    
-    new\s+Boolean\s*\(\s*false\s*\)
-    PATCH Boolean.FALSE
+new\s+Boolean\s*\(\s*false\s*\)
+PATCH Boolean.FALSE
 
 # Use valueOf for: Boolean|Byte|Character|Double|Float|Integer|Long|Short
 - */.svn/* - */.git/* + *.java    
-    new\s+(Boolean|Byte|Character|Double|Float|Integer|Long|Short)\s*\(
-    PATCH $1.valueOf(
+new\s+(Boolean|Byte|Character|Double|Float|Integer|Long|Short)\s*\(
+PATCH $1.valueOf(
 
 # No initial value false for a boolean
 - */.svn/* - */.git/* + *.java
-    ((?:private|protected|public)\s+boolean\s+\w+)\s*=\s*false\s*(;)
-    PATCH $1$2
+((?:private|protected|public)\s+boolean\s+\w+)\s*=\s*false\s*(;)
+PATCH $1$2
 
 # No initial values for instance variables
 # Use final, initialize in static block or use constructor  
 - */.svn/* - */.git/* + *.java
-    (?i)\x20+(private|protected|public)[^;\r\n]+= -.*\bfinal\b.*    
-    PRINT Check the assigment of value
+(?i)\x20+(private|protected|public)[^;\r\n]+= -.*\bfinal\b.*
+PRINT Check the assigment of value
      
 # No Magic numbers, better use constants
 - */.svn/* - */.git/* + *.java
-    ".*?[<>=]+\s*[2-9]
-    PRINT Check usage of magic numbers, better use constants
+".*?[<>=]+\s*[2-9]
+PRINT Check usage of magic numbers, better use constants

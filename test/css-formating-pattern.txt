@@ -11,8 +11,6 @@
 # The anti-pattern are organized in sections.
 # A section begins after a blank line or if the line does not begin with a blank
 # character. Therefore, the subsequent lines of a section are indented.
-# If a line is to be continued exactly, the line must begin with blanks and
-# '...'. The line is then continued with the first character after '...'.
 #
 # The section of a anti-pattern has three and more lines.
 # 
@@ -51,8 +49,7 @@
 #     TEST <replacment>
 # Displays a preview of the replacement without performing the replacement.    
 #     
-#     REMOVE
-#     PATCH
+#     REMOVE / PATCH
 # Deletes the match.
 # No further arguments are expected.
 # 
@@ -67,10 +64,10 @@
 
 # For TAB 2 spaces are used 
 - */.svn/* - */.git/* + *.css
-    \x09
-    PATCH \x20\x20\x20\x20
+\x09
+PATCH \x20\x20\x20\x20
     
 # Line by line, key and value are separated by colon and a space
 - */.svn/* - */.git/* + *.css
-    ((?s)^\s+[\w\-]+:)\s*
-    $1\x20
+((?s)^\s+[\w\-]+:)\s*
+$1\x20

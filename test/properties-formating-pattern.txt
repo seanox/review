@@ -11,8 +11,6 @@
 # The anti-pattern are organized in sections.
 # A section begins after a blank line or if the line does not begin with a blank
 # character. Therefore, the subsequent lines of a section are indented.
-# If a line is to be continued exactly, the line must begin with blanks and
-# '...'. The line is then continued with the first character after '...'.
 #
 # The section of a anti-pattern has three and more lines.
 # 
@@ -51,8 +49,7 @@
 #     TEST <replacment>
 # Displays a preview of the replacement without performing the replacement.    
 #     
-#     REMOVE
-#     PATCH
+#     REMOVE / PATCH
 # Deletes the match.
 # No further arguments are expected.
 # 
@@ -68,53 +65,53 @@
 # No blanks after the line continuation (/) at the end of a line,
 # because this deactivates the line continuation
 - */.svn/* - */.git/* + *.properties
-    (?m)\\\s+$
-    PATCH \\
+(?m)\\\s+$
+PATCH \\
 
 # No line continuation (/) without continuation line
 - */.svn/* - */.git/* + *.properties
-    (?s)(\\)(\s*\r\n){2,}
-    PATCH $1\r\n
+(?s)(\\)(\s*\r\n){2,}
+PATCH $1\r\n
     
 # No line continuation (/) without continuation line
 # Following lines are normally indented by spaces
 - */.svn/* - */.git/* + *.properties
-    (?s)\\(\r\n\w)
-    $1
+(?s)\\(\r\n\w)
+$1
 
 # Masked line breaks are not preceded by spaces
 - */.svn/* - */.git/* + *.properties
-    ([\w])\x20+(\\u000A)
-    PATCH $1$2
+([\w])\x20+(\\u000A)
+PATCH $1$2
 
 # Label and value are separated by " = "
 - */.svn/* - */.git/* + *.properties
-    (?m)^([\w]+[\.][\w\.]+)(=)
-    PATCH $1 $2
+(?m)^([\w]+[\.][\w\.]+)(=)
+PATCH $1 $2
 
 # Label and value are separated by " = "
 - */.svn/* - */.git/* + *.properties
-    (?m)^([\w]+[\.][\w\.]+\s+=)([^\s])
-    PATCH $1 $2
+(?m)^([\w]+[\.][\w\.]+\s+=)([^\s])
+PATCH $1 $2
 
 # Escaped line breaks are not preceded with spaces
 - */.svn/* - */.git/* + *.properties
-    ([\w])\x20+(\\u000A)
-    PATCH $1$2
+([\w])\x20+(\\u000A)
+PATCH $1$2
 
 # No spaces after the line continuation (/) at the end of a line,
 # because this deactivates the line continuation
 - */.svn/* - */.git/* + *.properties
-    (?m)\\\s+$
-    PATCH \\
+(?m)\\\s+$
+PATCH \\
 
 # No line continuation (/) without continuation line
 - */.svn/* - */.git/* + *.properties
-    (?s)(\\)(\s*\r\n){2,}
-    PATCH $1\r\n
+(?s)(\\)(\s*\r\n){2,}
+PATCH $1\r\n
 
 # No line continuation (/) without continuation line
 # Following lines are normally indented by spaces
 - */.svn/* - */.git/* + *.properties
-    (?s)\\(\r\n\w)
-    PATCH $1
+(?s)\\(\r\n\w)
+PATCH $1
