@@ -71,17 +71,22 @@
 
 
 
+# General file rule: Ignore all dot directories
+# ----
+
+
+
 # For TAB 4 spaces are used
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 \x09
 PATCH \x20\x20\x20\x20
 
 # Only space 20 is used as space character
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 [\x00-\x09\x0B\x0C\x0E-\x1F\xA0]
 PATCH \x20
 
 # Only ASCII (7-bit characters 0D/0A/20-7F) are used
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 [^\x0D\x0A\x20-\x7F]
 DETECT Check and add a rule

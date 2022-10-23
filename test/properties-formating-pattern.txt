@@ -71,56 +71,61 @@
 
 
 
+# General file rule: Ignore all dot directories
+# ----
+
+
+
 # No blanks after the line continuation (/) at the end of a line,
 # because this deactivates the line continuation
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 (?m)\\\s+$
 PATCH \\
 
 # No line continuation (/) without continuation line
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 (?s)(\\)(\s*\r\n){2,}
 PATCH $1\r\n
 
 # No line continuation (/) without continuation line
 # Following lines are normally indented by spaces
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 (?s)\\(\r\n\w)
 PATCH $1
 
 # Masked line breaks are not preceded by spaces
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 ([\w])\x20+(\\u000A)
 PATCH $1$2
 
 # Label and value are separated by " = "
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 (?m)^([\w]+[\.][\w\.]+)(=)
 PATCH $1 $2
 
 # Label and value are separated by " = "
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 (?m)^([\w]+[\.][\w\.]+\s+=)([^\s])
 PATCH $1 $2
 
 # Escaped line breaks are not preceded with spaces
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 ([\w])\x20+(\\u000A)
 PATCH $1$2
 
 # No spaces after the line continuation (/) at the end of a line,
 # because this deactivates the line continuation
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 (?m)\\\s+$
 PATCH \\
 
 # No line continuation (/) without continuation line
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 (?s)(\\)(\s*\r\n){2,}
 PATCH $1\r\n
 
 # No line continuation (/) without continuation line
 # Following lines are normally indented by spaces
-- */.svn/* - */.git/* + *.properties
+- */.*/* + *.properties
 (?s)\\(\r\n\w)
 PATCH $1

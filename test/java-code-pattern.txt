@@ -71,38 +71,43 @@
 
 
 
+# General file rule: Ignore all dot directories
+# ----
+
+
+
 # Use strings like an object and enclose them with round brackets
-- */.svn/* - */.git/* + *.java
+- */.*/* + *.java
 ("[^"\r\n,\+]*")\s*(\.[a-zA-Z])
 PATCH ($1)$2
 
 # Use Boolean.TRUE for new Boolean(...)
-- */.svn/* - */.git/* + *.java
+- */.*/* + *.java
 new\s+Boolean\(\s*true\s*\)
 PATCH Boolean.TRUE
 
 # Use Boolean.FALSE for new Boolean(...)
-- */.svn/* - */.git/* + *.java
+- */.*/* + *.java
 new\s+Boolean\s*\(\s*false\s*\)
 PATCH Boolean.FALSE
 
 # Use valueOf for: Boolean|Byte|Character|Double|Float|Integer|Long|Short
-- */.svn/* - */.git/* + *.java
+- */.*/* + *.java
 new\s+(Boolean|Byte|Character|Double|Float|Integer|Long|Short)\s*\(
 PATCH $1.valueOf(
 
 # No initial value false for a boolean
-- */.svn/* - */.git/* + *.java
+- */.*/* + *.java
 ((?:private|protected|public)\s+boolean\s+\w+)\s*=\s*false\s*(;)
 PATCH $1$2
 
 # No initial values for instance variables
 # Use final, initialize in static block or use constructor
-- */.svn/* - */.git/* + *.java
+- */.*/* + *.java
 (?i)\x20+(private|protected|public)[^;\r\n]+= -.*\bfinal\b.*
 DETECT Check the assigment of value
 
 # No Magic numbers, better use constants
-- */.svn/* - */.git/* + *.java
+- */.*/* + *.java
 ".*?[<>=]+\s*[2-9]
 DETECT Check usage of magic numbers, better use constants

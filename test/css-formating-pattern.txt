@@ -71,12 +71,15 @@
 
 
 
+# General file rule: Ignore all dot directories
+# ----
+
 # For TAB 2 spaces are used
-- */.svn/* - */.git/* + *.css
+- */.*/* + *.css
 \x09
 PATCH \x20\x20\x20\x20
 
 # Line by line, key and value are separated by colon and a space
-- */.svn/* - */.git/* + *.css
+- */.*/* + *.css
 ((?s)^\s+[\w\-]+:)\s*
 PATCH $1\x20
