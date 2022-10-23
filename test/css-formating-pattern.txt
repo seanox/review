@@ -70,4 +70,4 @@ PATCH \x20\x20\x20\x20
 # Line by line, key and value are separated by colon and a space
 - */.svn/* - */.git/* + *.css
 ((?s)^\s+[\w\-]+:)\s*
-$1\x20
+PATCH $1\x20
