@@ -2,6 +2,6 @@ usage: java -jar review.jar <options> <pattern>
 
 	-h help
 	-d directory (default work directory)
-	-x perform replacement
+	-x performs changes with PATCH and REMOVE
 
 	pattern, file(s) with (anti)pattern
