@@ -7,7 +7,7 @@ processed as if the line does not exist.
 
 Characters can be encoded hexadecimal.
 
-    e.g. \x<HEX> (\x23 = #, \x20 = space) 
+    e.g. \x<HEX> (\x23 = #, \x20 = space)
 
 The anti-pattern are organized in sections. A section begins after a blank line
 and is continued without blank line in the following line.
@@ -24,7 +24,7 @@ The section of a anti-pattern has three and more lines.
 
     line 2 primary pattern and optional partial patterns (sub-pattern)
     from line 3 more optional partial patterns (sub-pattern)
-    
+
 - primary pattern is the main pattern (always an include)
   The match found is then searched for partial patterns. Partial patterns can be
   inclusions and exclusions. Inclusions must begin with + and - begin
@@ -35,32 +35,35 @@ The section of a anti-pattern has three and more lines.
 
 AVOID LOOKBEHIND AT THE BEGINNING AND LOOKAHEAD AT THE END!
 THE PATTERNS ARE FOUND, EXTRACTED TO REPLACE BUT DO NOT FIT, BECAUSE MATCH
-STARTS AFTER LOOKBEHIND AND ENDS BEFORE LOOKAHEAD. 
-  
+STARTS AFTER LOOKBEHIND AND ENDS BEFORE LOOKAHEAD.
+
     last line: action
-    
+
 The action is primarily a regular replacement, corresponding to the search
 pattern. When replacing, the groups and the backward references of the primary
 pattern can be used. Secondary patterns cannot be used. The action always starts
 with a command that can be followed by spaces and then other arguments.
 
     The following additional actions are supported:
-    
-    TEST
-Output with details of the location.
-    
-    OUTPUT <message>
-Output with details of the location.
-The second line additionally displays the defined message.   
+
+    DETECT
+Detects match and outputs details of the location.
+
+    DETECT <message>
+Detects match and outputs details of the location.
+The second line displays the specified message.
 
     PATCH
-Deletes the match.
-No further arguments are expected.
+Without replacement, the match will be removed.
+Performs the replacement if the replacement is allowed as a program argument.
+Otherwise, the command behaves like DETECT.
 
     PATCH <replacement>
-Performs the replacement if the replacement is allowed as a program argument.
-Otherwise, the command behaves like TEST.
+Replaces the match with the specified replacement.
+The function requires the -x option to perform modifications.
+Otherwise, the command behaves like DETECT.
 
     REMOVE
 Deletes the match.
-No further arguments are expected.
+The function requires the -x option to perform modifications.
+Otherwise, the command behaves like DETECT.
