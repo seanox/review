@@ -1,5 +1,5 @@
-	found:		%d
-	fixed:		%d
+	matches:	%d
+	patched:	%d
 	errors:		%d
 	duration:	%.2f s
 	reviews:	%d (%d reviews/s)
