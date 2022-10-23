@@ -292,7 +292,9 @@ public class Review {
             System.out.println(summary);
             
         } catch (Exception exception) {
-            Review.print("%nERROR: %s %s", exception.getClass(), exception.getMessage());
+            Review.print(System.lineSeparator());
+            Review.print("An unexpected error occurred:");
+            Review.print(exception);
         }
     }
 
@@ -615,15 +617,15 @@ public class Review {
             task.conditions = Arrays.stream(task.conditions).filter(condition -> Condition.Type.CONTENT.equals(condition.type)).toArray(Condition[]::new);
             if (task.conditions.length <= 0)
                 throw new ReviewParserException("Invalid task structure found");
-            try {task.action = Task.decode(lines[lines.length -1]);
+            String pattern = "(?i)^(DETECT|PATCH|REMOVE)(?:\\s+(.*))*$";
+            String line = lines[lines.length -1].trim();
+            if (!line.matches(pattern))
+                throw new ReviewParserException("Invalid task action found");
+            task.command = line.replaceAll(pattern, "$1").toUpperCase();
+            try {task.action = Task.decode(line).replaceAll("^\\S+\\s", "");
             } catch (UnsupportedEncodingException exception) {
                 throw new ReviewParserException("Invalid encoded action found");
             }
-            String pattern = "(?i)^(DETECT|PATCH|REMOVE)(?:\\s+(.*)\\s*)*$";
-            if (!task.action.matches(pattern))
-                throw new ReviewParserException("Invalid task action found");
-            task.command = task.action.replaceAll(pattern, "$1").toUpperCase();
-            task.action = task.action.replaceAll(pattern, "$2");
             return task;            
         }
         
@@ -740,16 +742,8 @@ public class Review {
                         String location = String.format("line %s from character %s",
                                 Task.locateMatchLine(matcher, content, offset), Task.locateMatchCharacter(matcher, content, offset));
 
-                        if (this.command.matches("^REMOVE$")
-                                || (this.command.matches("^PATCH$")
-                                        && this.action.trim().isEmpty())) {
-                            content = content.substring(0, matcher.start() +offset) + content.substring(matcher.end() +offset);
-                            Review.writeFile(file, content.getBytes());
-                            Review.corrections++;
-                            output.println("PATCHED " + location);
-
-                        } else if (this.command.matches("^DETECT")
-                                || (this.command.matches("^PATCH$")
+                        if (this.command.matches("^DETECT")
+                                || (this.command.matches("^PATCH|REMOVE$") 
                                         && !Options.replace)) {
                             match = match.replaceAll(this.conditions[0].rule, this.action);
                             match = match.replaceAll("\\s", " ");
@@ -761,6 +755,14 @@ public class Review {
                             if (this.command.matches("^DETECT")
                                     && !this.action.trim().isEmpty())
                                 output.println(this.action.trim());
+                            
+                        } else if (this.command.matches("^REMOVE$")
+                                || (this.command.matches("^PATCH$")
+                                        && this.action.isEmpty())) {
+                            content = content.substring(0, matcher.start() +offset) + content.substring(matcher.end() +offset);
+                            Review.writeFile(file, content.getBytes());
+                            Review.corrections++;
+                            output.println("PATCHED " + location);
 
                         } else if (this.command.matches("^PATCH$")) {
                             match = match.replaceAll(this.conditions[0].rule, this.action);
@@ -770,7 +772,6 @@ public class Review {
                             output.println("PATCHED " + location);
                             offset += matcher.start() +match.length() -1;
                         }
-                        
                     }
                     
                     if (compare.equals(content)
