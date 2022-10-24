@@ -1,143 +1,208 @@
 # Description
 #
 # The anti-pattern file is a text file that is read line by line.
+#
 # A hash at the beginning of a line (blank characters are allowed before) marks
 # the line as a comment. Comments are not read and skipped. Means they are
 # processed as if the line does not exist.
+#
 # Characters can be encoded hexadecimal.
-# 
-#     e.g. \x<HEX> (\x23 = #, \x20 = space) 
-# 
-# The anti-pattern are organized in sections.
-# A section begins after a blank line or if the line does not begin with a blank
-# character. Therefore, the subsequent lines of a section are indented.
-# If a line is to be continued exactly, the line must begin with blanks and
-# '...'. The line is then continued with the first character after '...'.
+#
+#     e.g. \x<HEX> (\x23 = #, \x20 = space)
+#
+# The anti-pattern are organized in sections. A section begins after a blank
+# line and is continued without blank line in the following line.
 #
 # The section of a anti-pattern has three and more lines.
-# 
+#
 #     line 1: file filter
-# 
+#
 # - space characters are separators
 # - every part of the filter must start with a directive
 # - backslash / slash are identical
 # - placeholders * and ? are supported
 # - delimiter + (include) and - (exclude)
-# 
-#     line 2 and more: primary pattern, optional partial patterns (sub-pattern)
-#     
+#
+#     line 2 primary pattern and optional partial patterns (sub-pattern)
+#     from line 3 more optional partial patterns (sub-pattern)
+#
 # - primary pattern is the main pattern (always an include)
-#   The match found is then searched for Partial patterns.
-#   Partial patterns can be inclusions and exclusions. Inclusions must begin
-#   with + and - begin exclusions. The primary pattern has no directive.
-#   All partial patterns must be true, only then is the action executed.
+#   The match found is then searched for partial patterns. Partial patterns can
+#   be inclusions and exclusions. Inclusions must begin with + and - begin
+#   exclusions. The primary pattern has no directive. All partial patterns must
+#   be true, only then is the action executed.
 # - patterns are separated by white spaces
 #   In a pattern, spaces must be encoded hexadecimal.
 #
 # AVOID LOOKBEHIND AT THE BEGINNING AND LOOKAHEAD AT THE END!
 # THE PATTERNS ARE FOUND, EXTRACTED TO REPLACE BUT DO NOT FIT, BECAUSE MATCH
-# STARTS AFTER LOOKBEHIND AND ENDS BEFORE LOOKAHEAD. 
-#   
+# STARTS AFTER LOOKBEHIND AND ENDS BEFORE LOOKAHEAD.
+#
 #     last line: action
-#     
+#
 # The action is primarily a regular replacement, corresponding to the search
 # pattern. When replacing, the groups and the backward references of the primary
-# pattern can be used. Secondary patterns cannot be used.
-# The action always starts with a command that can be followed by spaces and
-# then other arguments.
-# 
+# pattern can be used. Secondary patterns cannot be used. The action always
+# starts with a command that can be followed by spaces and then other arguments.
+#
 #     The following additional actions are supported:
-#     
-#     TEST <replacment>
-# Displays a preview of the replacement without performing the replacement.    
-#     
-#     REMOVE / PATCH
-# Deletes the match.
-# No further arguments are expected.
-# 
-#     PRINT <message>
-# Displays a information about a location without performing a replacement.
-# 
-#     PATCH <replacement>
+#
+#     DETECT
+# Detects match and outputs details of the location.
+#
+#     DETECT <message>
+# Detects match and outputs details of the location.
+# The second line displays the specified message.
+#
+#     PATCH
+# Without replacement, the match will be removed.
 # Performs the replacement if the replacement is allowed as a program argument.
-# Otherwise, the command behaves like TEST.
+# Otherwise, the command behaves like DETECT.
+#
+#     PATCH <replacement>
+# Replaces the match with the specified replacement.
+# The function requires the -x option to perform modifications.
+# Otherwise, the command behaves like DETECT.
+#
+#     REMOVE
+# Deletes the match.
+# The function requires the -x option to perform modifications.
+# Otherwise, the command behaves like DETECT.
 
 
-# examples for java ============================================================
 
-# finds capitalized variables
-# include all *.java files, ignore all .svn directories
-# + *.java
+# General rules:
+# - ignore all dot directories
+# - work recursive
+
+
+
+# Examples for CSS
+# ----
+
+# For TAB 2 spaces are used
+# - */.*/* + *.css
+# \x09
+# PATCH \x20\x20
+
+# Line by line, key and value are separated by colon and a space
+# For testing, ignore all property with the name ignore
+# - */.*/* + *.css
+# (?s)((?:\R|;)\s*[^\s;:]+)\s*:\s*([^\s;:])
+# - .*ignore.*
+# PATCH $1:\x20$2
+
+# Before a curly bracket is one space
+# - */.*/* + *.css
+# \s+(\{)
+# PATCH \x20$1
+
+
+
+# Examples for Java
+# ----
+
+# Find capitalized variables
+# Include all *.java files, ignore all dot directories
+# - */.*/* + *.java
 # private\s+[A-Za-z]+\s[A-Z][\w]+;
-# PRINT check it, uncapitalize
+# DETECT check it, uncapitalize
 
-# finds constants without final
-# include all *.java files, ignore all .svn directories
-# + *.java
+# Find constants without final
+# Include all *.java files, ignore all dot directories
+# - */.*/* +  *.java
 # \x20+(\x20+[a-z]+){1,}\x20+[A-Z]{2,} -\sfinal\s
-# PRINT check it, use 'final' for constants
+# DETECT check it, use 'final' for constants
 
-# finds constants without static
-# include all *.java files, ignore all .svn directories
-# + *.java
+# Find constants without static
+# Include all *.java files, ignore all dot directories
+# - */.*/* +  *.java
 # \x20+(\x20+[a-z]+){1,}\x20+[A-Z]{2,} -\sstatic\s
-# PRINT check it, use 'static' for constants
+# DETECT check it, use 'static' for constants
 
-# finds class|interface|enun with invalid name
-# include all *.java files, ignore all .svn directories
-# + *.java
+# Find class|interface|enun with invalid name
+# Include all *.java files, ignore all dot directories
+# - */.*/* +  *.java
 # \s(class|interface|enun)\s+[A-Z]*[a-zA-Z0-9]*[A-Z]{2}
-# PRINT check it, use camel case for class/interface/enum
+# DETECT check it, use camel case for class/interface/enum
 
-# finds class|interface|enun with invalid name
-# include all *.java files, ignore all .svn directories
-# + *.java
+# Find class|interface|enun with invalid name
+# Include all *.java files, ignore all dot directories
+# - */.*/* +  *.java
 # \s(class|interface|enun)\s+(?i)[a-z0-9]*[^a-z0-9\s]
-# PRINT check it, use only chars a-z, 0-9 for class/interface/enum
+# DETECT check it, use only chars a-z, 0-9 for class/interface/enum
 
-# finds all new Boolean(true) and replace in Boolean.TRUE 
-# include all *.java files, ignore all .svn directories
-# + *.java
+# Find all new Boolean(true) and replace in Boolean.TRUE
+# Include all *.java files, ignore all dot directories
+# - */.*/* +  *.java
 # new\s+Boolean\(\s*true\s*\)
 # PATCH Boolean.TRUE
 
-# finds all new Boolean(false) and replace in Boolean.FALSE
-# include all *.java files, ignore all .svn directories
-# + *.java
+# Find all new Boolean(false) and replace in Boolean.FALSE
+# Include all *.java files, ignore all dot directories
+# - */.*/* +  *.java
 # new\s+Boolean\s*\(\s*false\s*\)
 # PATCH Boolean.FALSE
-  
-# finds all the places where 'valueOf' can be used and correct it  
-# include all *.java files, ignore all .svn directories
-# + *.java
+
+# Find all the places where 'valueOf' can be used and correct it
+# Include all *.java files, ignore all dot directories
+# - */.*/* +  *.java
 # new\s+(Boolean|Byte|Character|Double|Float|Integer|Long|Short)\s*\(
 # PATCH $1.valueOf(
 
+# Find as strings in quotes
+# Use strings like an object and enclose them with round brackets (small quirk)
+# - */.*/* + *.java
+# ("[^"\r\n,\+]*")\s*(\.[a-zA-Z])
+# PATCH ($1)$2
 
-# examples for html ============================================================
+# Find initial value false for a boolean
+# Do not use a default value initially
+# - */.*/* + *.java
+# ((?:private|protected|public)\s+boolean\s+\w+)\s*=\s*false\s*(;)
+# PATCH $1$2
 
-# finds a-tag where the title-attribute ist empty or missing 
+# Find initial values for instance variables
+# Use final, initialize in static block or use constructor
+# - */.*/* + *.java
+# (?i)\x20+(private|protected|public)[^;\r\n]+= -.*\bfinal\b.*
+# DETECT Check the assigment of value
+
+# Find magic numbers
+# No Magic numbers, better use constants
+# - */.*/* + *.java
+# ".*?[<>=]+\s*[2-9]
+# DETECT Check usage of magic numbers, better use constants
+
+
+
+# Examples for HTML
+# ----
+
+# finds a-tag where the title-attribute ist empty or missing
 # include all *.html files, ignore all .svn directories
-# + *.html
+# - */.*/* + *.html
 # (?i)<\s*a[^>]+> -(?i)\btitle="[^"]+"
-# PRINT check it, a-tag with invalid title-attribute
+# DETECT check it, a-tag with invalid title-attribute
 
 # finds a-tag where the href-attribute ist empty or missing
 # include all *.html files, ignore all .svn directories
-# + *.html
+# - */.*/* + *.html
 # (?i)<\s*a[^>]+> -(?i)\bhref="[^"]+"
-# PRINT check it, a-tag with invalid href-attribute
+# DETECT check it, a-tag with invalid href-attribute
 
 # finds input-tags without label-tag
 # include all *.html files, ignore all .svn directories
-# + *.html
+# - */.*/* + *.html
 # <\s*[^/].*?\s*<input -<\s*label
-# PRINT check it, use input alway with a label
+# DETECT check it, use input alway with a label
 
 
-# examples for properties ======================================================
+
+# Examples for properties
+# ----
 
 # only 7-bit characters (x0D x0A x20-x7F xA7) are used
-+ *.properties
-([\x80-\xFF])
-PRINT Check and add a rule
+# + *.properties
+# ([\x80-\xFF])
+# DETECT Use ASCII code only

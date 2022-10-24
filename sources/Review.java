@@ -140,8 +140,8 @@ public class Review {
         
         String[] lines = new String(Files.readAllBytes(file.toPath())).split("(\r\n)|(\n\r)|\r|\n");
         IntStream.range(0, lines.length).forEach(index -> {
-            if (lines[index].matches("^[^\\s#].*"))
-                lines[index] = (index +1) + ":" + lines[index];
+            if (lines[index].matches("^\\s*[^#].*"))
+                lines[index] = (index +1) + ":" + lines[index].trim();
         });        
         
         String content = String.join("\n", lines);
@@ -283,9 +283,9 @@ public class Review {
                     Review.errors,
                     time,
                     Review.reviews,
-                    (long)(time <= 1 ? Review.reviews : Review.reviews /time),
+                    (long)(Review.reviews /time),
                     Review.files,
-                    (long)(time <= 1 ? Review.files : Review.files /time),
+                    (long)(Review.files /time),
                     volume,
                     volume /time);
             System.out.println();
@@ -293,6 +293,10 @@ public class Review {
             
         } catch (Exception exception) {
             Review.print(System.lineSeparator());
+            if (exception instanceof ReviewException) {
+                Review.print(exception.getMessage());
+                return;
+            }
             Review.print("An unexpected error occurred:");
             Review.print(exception);
         }
@@ -548,7 +552,7 @@ public class Review {
                     conditions.add(new Include(Condition.Type.CONTENT, Task.decode(rule.substring(1))));
                 else if (rule.startsWith("-"))
                     conditions.add(new Exclude(Condition.Type.CONTENT, Task.decode(rule.substring(1))));
-                else throw new ReviewParserException("Invalid file condition found");
+                else throw new ReviewParserException("Invalid condition found");
                 // the first condition must be a include
                 if (conditions.size() == 1
                         && conditions.get(0) instanceof Exclude)
@@ -749,11 +753,14 @@ public class Review {
                         if (this.command.matches("^DETECT")
                                 || (this.command.matches("^PATCH|REMOVE$") 
                                         && !Options.replace)) {
-                            match = match.replaceAll(this.conditions[0].rule, this.action);
-                            match = match.replaceAll("\\s", " ");
-                            if (match.length() > 74)
-                                match = match.substring(0, 71) + "...";
-                            output.println("DETECTED " + location + " " + match);
+                            String message = content.substring(matcher.start() +offset, matcher.end() +offset)
+                                    .replaceAll("\\s", " ").trim();
+                            if (!message.isEmpty())
+                                message = "DETECTED " + location + ": " + message;
+                            else message = "DETECTED " + location;
+                            if (message.length() > 74)
+                                message = message.substring(0, 71) + "...";
+                            output.println(message);
                             offset += matcher.end();
 
                             if (this.command.matches("^DETECT")
