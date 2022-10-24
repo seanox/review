@@ -42,7 +42,7 @@ import java.util.stream.IntStream;
  * Review, a text based code analyzer.
  *
  * @author  Seanox Software Solutions
- * @version 1.5.0 20221023
+ * @version 1.5.0 20221024
  */
 public class Review {
 
@@ -93,7 +93,7 @@ public class Review {
      * Writes a message to the system output stream.
      * @param message message
      */
-    private static void print(Object message) {
+    private static synchronized void print(Object message) {
         if (message instanceof Throwable) {
             StringWriter writer = new StringWriter();
             ((Throwable)message).printStackTrace(new PrintWriter(writer));
@@ -360,10 +360,15 @@ public class Review {
                 }
 
                 for (Task task : Review.tasks) {
+
                     try {this.sleepSmart();
                     } catch (InterruptedException exception) {
                         break;
                     }
+                    
+                    if (!task.filter.accept(file))
+                        continue; 
+                    Review.files++;
                     task.perform(file);
                 }
                 
@@ -534,6 +539,7 @@ public class Review {
                 throw new ReviewParserException("Invalid pattern found");
             
             String expression = String.join(" ", expressions).trim();
+            expression = expression.replaceAll("([+-])\\s+", "$1");
             List<Condition> conditions = new ArrayList<>();
             for (String rule : expression.split("\\s+")) {
                 if (conditions.size() == 0)
@@ -622,7 +628,7 @@ public class Review {
             if (!line.matches(pattern))
                 throw new ReviewParserException("Invalid task action found");
             task.command = line.replaceAll(pattern, "$1").toUpperCase();
-            try {task.action = Task.decode(line).replaceAll("^\\S+\\s", "");
+            try {task.action = Task.decode(line.replaceAll("^\\S+\\s+", ""));
             } catch (UnsupportedEncodingException exception) {
                 throw new ReviewParserException("Invalid encoded action found");
             }
@@ -684,8 +690,6 @@ public class Review {
             try {
                 if (!this.filter.accept(file))
                     return; 
-                
-                Review.files++;
 
                 String compare = "";
                 String content = "";
