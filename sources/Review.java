@@ -226,18 +226,19 @@ public class Review {
                     Options.help = true;                
             } else pattern = option;
         }
-        
-        if (pattern == null) {
-            System.out.println(Review.getResourceText("usage.txt"));
-            if (Options.help)
-                System.out.println(Review.getResourceText("help.txt"));
-            System.out.println();
-            return;
-        }
-        
+
         System.out.println("Review [Version 0.0.0 00000000]");
         System.out.println("Copyright (C) 0000 Seanox Software Solutions");
         System.out.println("Expression Based Static Code Analysis");
+        
+        if (pattern == null) {
+            System.out.println();
+            System.out.println(Review.getResourceText("usage.txt"));
+            if (Options.help)
+                System.out.println(Review.getResourceText("help.txt"));
+            return;
+        }
+
         Review.timing = System.currentTimeMillis();
         
         try {
