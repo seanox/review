@@ -2,15 +2,16 @@
   BF: Correction of repeated/multiple searches and replacements in the same file
       Every second finding was not replaced.
       Patterns before with expansive expressions are also found by repeating.
+  BF: Optimization and corrections of: output / tests / release info process
   BF: Correction of repeated outputs of the same tasks/findings during analysis
-  BF: Build: Optimization of the release info process
-  CR: Update of the comment format
+  CR: Changed to Apache License Version 2.0
   CR: Uniform use of ./LICENSE and ./CHANGES
   CR: Update to use Java 11
-  CR: Update of commands: TEST|PRINT|PATCH|REMOVE
-      - use: TEST for TEST: / PRINT for INFO: / PATCH for each replacement / REMOVE for VOID:
-  CR: License: Changed to Apache License Version 2.0
-  CR: Build: Releases are now only available on the release page
+  CR: Releases are now only available on the release page
+  CR: Optimization and corrections of: syntax / commands
+      DETECT/PATCH/REMOVE
+      The preview function is omitted.
+      Update of the comment format.
   CR: Optimization of syntax for continuing lines
       The sequence ... at the beginning of the line is no longer required.
 
