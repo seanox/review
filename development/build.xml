@@ -144,6 +144,8 @@
     <copy file="${workspace.test}/java-formating-pattern.txt" todir="${build.project}/examples"/>
     <copy file="${workspace.test}/properties-encoding-pattern.txt" todir="${build.project}/examples"/>
     <copy file="${workspace.test}/properties-formating-pattern.txt" todir="${build.project}/examples"/>
+    <copy file="${workspace.test}/anti-pattern.txt" todir="${build.project}"/>
+    <replaceregexp file="${build.project}/anti-pattern.txt" match="(?s)\R\s[^#].*$" replace="" byline="false"/>
     <touch datetime="${release.date}" pattern="yyyyMMdd">
       <fileset dir="${build}"/>
     </touch>
