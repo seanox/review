@@ -71,8 +71,9 @@
 
 
 
-# General file rule: Ignore all dot directories
-# ----
+# General rules:
+# - ignore all dot directories
+# - work recursive
 
 # For TAB 2 spaces are used
 - */.*/* + *.css
@@ -81,5 +82,5 @@ PATCH \x20\x20\x20\x20
 
 # Line by line, key and value are separated by colon and a space
 - */.*/* + *.css
-((?s)^\s+[\w\-]+:)\s*
-PATCH $1\x20
+(?s)((?:\R|;)\s*[^\s;:]+)\s*:\s*([^\s;:])
+PATCH $1:\x20$2

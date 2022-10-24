@@ -71,10 +71,9 @@
 
 
 
-# General file rule: Ignore all dot directories
-# ----
-
-
+# General rules:
+# - ignore all dot directories
+# - work recursive
 
 # Use strings like an object and enclose them with round brackets
 - */.*/* + *.java

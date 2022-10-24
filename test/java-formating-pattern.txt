@@ -71,10 +71,9 @@
 
 
 
-# General file rule: Ignore all dot directories
-# ----
-
-
+# General rules:
+# - ignore all dot directories
+# - work recursive
 
 # No unnecessary blank lines at the end of comment blocks
 - */.*/* + *.java
