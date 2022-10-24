@@ -84,6 +84,8 @@ public class Test {
 
         }
         
+        String s = "xxx".concat("ooo");
+        
         String s = "xxx" +
                 "xxx" +
                 "xxx";
