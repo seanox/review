@@ -1,4 +1,4 @@
-1.5.0 2022xxxx
+1.5.0 20221024
   BF: Correction of repeated/multiple searches and replacements in the same file
       Every second finding was not replaced.
       Patterns before with expansive expressions are also found by repeating.

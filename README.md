@@ -81,7 +81,7 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-[Seanox Review 1.4.2](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.2.zip)  
+[Seanox Review 1.5.0](https://github.com/seanox/review/releases/download/1.5.0/seanox-review-1.5.0.zip)  
 
 
 # Changes
