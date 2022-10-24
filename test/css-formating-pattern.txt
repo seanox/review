@@ -78,9 +78,16 @@
 # For TAB 2 spaces are used
 - */.*/* + *.css
 \x09
-PATCH \x20\x20\x20\x20
+PATCH \x20\x20
 
 # Line by line, key and value are separated by colon and a space
+# For testing, ignore all property with the name ignore
 - */.*/* + *.css
 (?s)((?:\R|;)\s*[^\s;:]+)\s*:\s*([^\s;:])
+- .*ignore.*
 PATCH $1:\x20$2
+
+# Before a curly bracket is one space
+- */.*/* + *.css
+\s+(\{)
+PATCH \x20$1
