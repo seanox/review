@@ -1,0 +1,23 @@
+  body {
+    background: #FFFFFF;  
+  }
+    #a {
+    background: #FFFFFF;  
+  }
+    #b {
+    background: #FFFFFF;  
+    ignore  :  #FFFFFF; 
+    catch: #FFFFFF; 
+  }
+  
+  
+  
+    #c {
+    background: #FFFFFF;  
+  }
+  
+  
+    #d {
+    background: #FFffFF  ;  
+  }
+  
