@@ -49,7 +49,8 @@ misconduct, these are the expectations of review.
 # Features
 - Command line tool
 - expression-based static code analysis
-- text-based search and replace with regular expressions with inclusions and exclusions
+- text-based search and replace with regular expressions, supports inclusions
+  and exclusions
 - File filter with inclusions and exclusions
 - simple definition of the reviews
 - parallel execution of the reviews
@@ -81,7 +82,6 @@ specific language governing permissions and limitations under the License.
 
 # Downloads
 [Seanox Review 1.4.2](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.2.zip)  
-[Seanox Review Sources 1.4.2](https://github.com/seanox/review/raw/master/releases/seanox-review-1.4.2-src.zip) 
 
 
 # Changes
