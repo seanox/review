@@ -105,7 +105,7 @@
         replace="${now.year}"/>
   </target>
   
-  <target name="release">
+  <target name="release" depends="changes">
     <release-locate/>
     
     <delete dir="${build}"/> 
