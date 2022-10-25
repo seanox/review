@@ -139,6 +139,7 @@
     <mkdir dir="${build.project}"/>
     <move file="${build.project}.jar" todir="${build.project}"/>
     <copy file="${workspace}/LICENSE" todir="${build.project}"/>
+    <copy file="${workspace}/CHANGES" todir="${build.project}"/>
     <copy file="${workspace.test}/java-code-pattern.txt" todir="${build.project}/examples"/>
     <copy file="${workspace.test}/java-encoding-pattern.txt" todir="${build.project}/examples"/>
     <copy file="${workspace.test}/java-formating-pattern.txt" todir="${build.project}/examples"/>
