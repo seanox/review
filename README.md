@@ -17,9 +17,8 @@ Seanox Review, a text-based static code analysis for checking and correcting
 silent standards.
 
 Silent standards are project-specific as well as conceptual regulations and
-standards and guidelines (code of conduct) that are not covered by the syntactic
-and grammatical check of a compiler and are defined by technical and
-professional concepts.
+standards and guidelines that are not covered by the syntactic and grammatical
+check of a compiler and are defined by technical and professional concepts.
 
 The tool is based on regular expressions, file filters and combines patterns and
 exclusions, which enables, among other things, the search for non-existent,
