@@ -85,6 +85,7 @@ specific language governing permissions and limitations under the License.
 
 # Changes
 ## 1.5.1 20240602  
+BF: Optimization and corrections  
 BF: Correction of the synchronization of CHANGES and README.md at the release  
 BF: Correction of the missing CHANGES in the release file  
 
