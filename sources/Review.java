@@ -4,7 +4,7 @@
  * Diese Software unterliegt der Version 2 der Apache License.
  *
  * Review, text based code analyzer
- * Copyright (C) 2022 Seanox Software Solutions
+ * Copyright (C) 2024 Seanox Software Solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -28,6 +28,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ import java.util.stream.IntStream;
  * Review, a text based code analyzer.
  *
  * @author  Seanox Software Solutions
- * @version 1.5.0 20221024
+ * @version 1.5.1 20240602
  */
 public class Review {
 
@@ -192,7 +193,7 @@ public class Review {
             throws IOException {
         String text = new String(Review.getResourceBytes(resource));
         text = text.replaceAll("\\x20{4}", "\t");
-        text = text.replaceAll("(?m)\\s+$", System.getProperty("line.separator"));
+        text = text.replaceAll("(?m)\\s+$", System.lineSeparator());
         text = text.replaceAll("\\s+$", "");
         return text;
     }
@@ -248,8 +249,7 @@ public class Review {
             System.out.printf("\tfound %s tasks%n", Review.tasks.size());
 
             Review.queue = new ArrayList<>();
-            if (path != null
-                    && path.exists())
+            if (path.exists())
                 Review.queue = Arrays.asList(Files.walk(path.toPath())
                         .map(Path::toFile)
                         .filter(file -> file.isFile() && file.exists())
@@ -342,12 +342,10 @@ public class Review {
          */
         private void sleepSmart()
                 throws InterruptedException {
-
             if (this.timing == 0)
                 this.timing = System.currentTimeMillis();
             if ((System.currentTimeMillis() -this.timing) < 20)
                 return;
-            
             Thread.sleep(25);
             this.timing = System.currentTimeMillis();
         }
@@ -361,16 +359,14 @@ public class Review {
                 synchronized (Review.queue) {
                     if (Review.queue.size() <= 0)
                         break;
-                    file = Review.queue.remove(0);
+                    file = Review.queue.removeFirst();
                 }
 
                 for (Task task : Review.tasks) {
-
                     try {this.sleepSmart();
                     } catch (InterruptedException exception) {
                         break;
                     }
-                    
                     if (!task.filter.accept(file))
                         continue; 
                     Review.files++;
@@ -403,12 +399,9 @@ public class Review {
          * @param rule rule
          */
         private Condition(Type type, String rule) {
-            
             this.type = type;
             switch (this.type) {
-                
                 case FILE:
-                    
                     rule = rule.trim();
                     rule = rule.replace('\\', '/');
                     rule = rule.replaceAll("\\/+", "/");
@@ -417,16 +410,12 @@ public class Review {
                     rule = rule.replaceAll("\\?", "\\\\E.\\\\Q");
                     rule = "(" + rule + ")";
                     this.rule = rule;
-                    
                     this.pattern = Pattern.compile(this.rule);
-                    
                     break;
 
                 case CONTENT:
-
                     this.rule = rule;
                     this.pattern = Pattern.compile(this.rule);
-                    
                     break;
                     
                 default:
@@ -495,7 +484,7 @@ public class Review {
             text = text.replaceAll("\\%", "\\\\x25");
             text = text.replaceAll("\\+", "\\\\x2B");
             text = text.replaceAll("(?i)\\\\x([0-9a-f]{2})", "%$1");
-            return URLDecoder.decode(text, "ISO-8859-1");
+            return URLDecoder.decode(text, StandardCharsets.ISO_8859_1);
         }
         
         /**
@@ -547,7 +536,7 @@ public class Review {
             expression = expression.replaceAll("([+-])\\s+", "$1");
             List<Condition> conditions = new ArrayList<>();
             for (String rule : expression.split("\\s+")) {
-                if (conditions.size() == 0)
+                if (conditions.isEmpty())
                     conditions.add(new Include(Condition.Type.CONTENT, Task.decode(rule)));
                 else if (rule.startsWith("+"))
                     conditions.add(new Include(Condition.Type.CONTENT, Task.decode(rule.substring(1))));
@@ -556,7 +545,7 @@ public class Review {
                 else throw new ReviewParserException("Invalid condition found");
                 // the first condition must be a include
                 if (conditions.size() == 1
-                        && conditions.get(0) instanceof Exclude)
+                        && conditions.getFirst() instanceof Exclude)
                     throw new ReviewParserException("Invalid pattern found");
             }
             
