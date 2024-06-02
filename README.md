@@ -61,7 +61,7 @@ Seanox Software Solutions oder kurz Seanox genannt.
 
 Diese Software unterliegt der Version 2 der Apache License.
 
-Copyright (C) 2022 Seanox Software Solutions
+Copyright (C) 2024 Seanox Software Solutions
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License. You may obtain a copy of the
@@ -80,20 +80,13 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-[Seanox Review 1.5.0](https://github.com/seanox/review/releases/download/1.5.0/seanox-review-1.5.0.zip)  
+[Seanox Review 1.5.1](https://github.com/seanox/review/releases/download/1.5.1/seanox-review-1.5.1.zip)  
 
 
 # Changes
-## 1.5.0 20221024  
-BF: Correction of repeated/multiple searches and replacements in the same file  
-BF: Optimization and corrections of: output / tests / release info process  
-BF: Correction of repeated outputs of the same tasks/findings during analysis  
-CR: Changed to Apache License Version 2.0  
-CR: Uniform use of ./LICENSE and ./CHANGES  
-CR: Update to use Java 11  
-CR: Releases are now only available on the release page  
-CR: Optimization and corrections of: syntax / commands  
-CR: Optimization of syntax for continuing lines  
+## 1.5.1 20240602  
+BF: Correction of the synchronization of CHANGES and README.md at the release  
+BF: Correction of the missing CHANGES in the release file  
 
 [Read more](https://raw.githubusercontent.com/seanox/review/master/CHANGES)
 
